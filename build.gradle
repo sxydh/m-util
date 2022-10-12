@@ -20,6 +20,10 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 
+    // https://mvnrepository.com/artifact/com.baidu.aip/java-sdk
+    implementation 'com.baidu.aip:java-sdk:4.16.11'
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    implementation 'commons-io:commons-io:2.11.0'
     // https://mvnrepository.com/artifact/com.aliyun/dysmsapi20170525
     implementation 'com.aliyun:dysmsapi20170525:2.0.9'
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto
