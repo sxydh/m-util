@@ -26,37 +26,6 @@ import java.util.Objects;
  */
 public class WeChatUtils {
 
-    private static String getHttpResponse(CloseableHttpClient closeableHttpClient, HttpUriRequest request) throws Exception {
-        try (CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(request)) {
-            String resStr = EntityUtils.toString(closeableHttpResponse.getEntity(), StandardCharsets.UTF_8).trim();
-            int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
-            if (HttpStatus.SC_OK != statusCode) {
-                throw new HttpException(Objects.toString(resStr, String.valueOf(statusCode)));
-            }
-            return resStr;
-        }
-    }
-
-    private static String get(URI uri) throws Exception {
-        try (CloseableHttpClient closeableHttpClient = HttpClients.createDefault()) {
-            HttpGet httpGet = new HttpGet(uri);
-            return getHttpResponse(closeableHttpClient, httpGet);
-        }
-    }
-
-    private static String post(URI uri, Map<String, ?> body) throws Exception {
-        return post(uri, JSON.toJSONString(body));
-    }
-
-    private static String post(URI uri, String body) throws Exception {
-        try (CloseableHttpClient closeableHttpClient = HttpClients.createDefault()) {
-            HttpPost httpPost = new HttpPost(uri);
-            StringEntity stringEntity = new StringEntity(body, StandardCharsets.UTF_8);
-            httpPost.setEntity(stringEntity);
-            return getHttpResponse(closeableHttpClient, httpPost);
-        }
-    }
-
     /**
      * 获取接口调用凭证access_token.
      *
@@ -71,7 +40,7 @@ public class WeChatUtils {
                 .setParameter("appid", appid)
                 .setParameter("secret", secret)
                 .build();
-        return get(uri);
+        return HttpClientUtils.get(uri);
     }
 
     /**
@@ -90,7 +59,7 @@ public class WeChatUtils {
                 .setParameter("secret", secret)
                 .setParameter("js_code", jsCode)
                 .build();
-        return get(uri);
+        return HttpClientUtils.get(uri);
     }
 
     public static String sendSubscribedMessage(String accessToken, SubscribedMessage subscribedMessage) throws Exception {
@@ -100,7 +69,7 @@ public class WeChatUtils {
         // 生产环境中, config要做singleton处理, 要不然会存在性能问题.
         SerializeConfig config = new SerializeConfig();
         config.propertyNamingStrategy = PropertyNamingStrategy.SnakeCase;
-        return post(uri, JSONObject.toJSONString(subscribedMessage, config));
+        return HttpClientUtils.post(uri, JSONObject.toJSONString(subscribedMessage, config));
     }
 
 }

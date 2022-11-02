@@ -31,37 +31,6 @@ import java.util.Random;
  */
 public class DingTalkUtils {
 
-    private static String get(URI uri) throws Exception {
-        try (CloseableHttpClient closeableHttpClient = HttpClients.createDefault()) {
-            HttpGet httpGet = new HttpGet(uri);
-            return getHttpResponse(closeableHttpClient, httpGet);
-        }
-    }
-
-    private static String post(URI uri, Map<String, Object> body) throws Exception {
-        return post(uri, JSON.toJSONString(body));
-    }
-
-    private static String post(URI uri, String body) throws Exception {
-        try (CloseableHttpClient closeableHttpClient = HttpClients.createDefault()) {
-            HttpPost httpPost = new HttpPost(uri);
-            StringEntity stringEntity = new StringEntity(body, StandardCharsets.UTF_8);
-            httpPost.setEntity(stringEntity);
-            return getHttpResponse(closeableHttpClient, httpPost);
-        }
-    }
-
-    private static String getHttpResponse(CloseableHttpClient closeableHttpClient, HttpUriRequest request) throws Exception {
-        try (CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(request)) {
-            String resStr = EntityUtils.toString(closeableHttpResponse.getEntity(), StandardCharsets.UTF_8).trim();
-            int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
-            if (HttpStatus.SC_OK != statusCode) {
-                throw new HttpException(Objects.toString(resStr, String.valueOf(statusCode)));
-            }
-            return resStr;
-        }
-    }
-
     /**
      * 获取企业内部应用的access_token.
      *
@@ -75,7 +44,7 @@ public class DingTalkUtils {
                 .setParameter("appkey", appKey)
                 .setParameter("appsecret", appSecret)
                 .build();
-        return get(uri);
+        return HttpClientUtils.get(uri);
     }
 
     /**
@@ -91,7 +60,7 @@ public class DingTalkUtils {
                 .setParameter("access_token", accessToken)
                 .setParameter("code", code)
                 .build();
-        return get(uri);
+        return HttpClientUtils.get(uri);
     }
 
     /**
@@ -109,7 +78,7 @@ public class DingTalkUtils {
                 .setParameter("access_token", accessToken)
                 .setParameter("mobile", mobile)
                 .build();
-        return get(uri);
+        return HttpClientUtils.get(uri);
     }
 
     /**
@@ -127,7 +96,7 @@ public class DingTalkUtils {
                 .setParameter("access_token", accessToken)
                 .setParameter("userid", userId)
                 .build();
-        return get(uri);
+        return HttpClientUtils.get(uri);
     }
 
     /**
@@ -145,7 +114,7 @@ public class DingTalkUtils {
         // 生产环境中, config要做singleton处理, 要不然会存在性能问题.
         SerializeConfig config = new SerializeConfig();
         config.propertyNamingStrategy = PropertyNamingStrategy.SnakeCase;
-        return post(uri, JSONObject.toJSONString(body, config));
+        return HttpClientUtils.post(uri, JSONObject.toJSONString(body, config));
     }
 
     /**
@@ -161,7 +130,7 @@ public class DingTalkUtils {
         URI uri = new URIBuilder("https://oapi.dingtalk.com/topapi/message/corpconversation/getsendprogress")
                 .setParameter("access_token", accessToken)
                 .build();
-        return post(uri, Map.of(
+        return HttpClientUtils.post(uri, Map.of(
                 "agent_id", agentId,
                 "task_id", taskId
         ));
@@ -180,7 +149,7 @@ public class DingTalkUtils {
         URI uri = new URIBuilder("https://oapi.dingtalk.com/topapi/message/corpconversation/recall")
                 .setParameter("access_token", accessToken)
                 .build();
-        return post(uri, Map.of(
+        return HttpClientUtils.post(uri, Map.of(
                 "agent_id", agentId,
                 "msg_task_id", taskId
         ));
@@ -197,7 +166,7 @@ public class DingTalkUtils {
         URI uri = new URIBuilder("https://oapi.dingtalk.com/get_jsapi_ticket")
                 .setParameter("access_token", accessToken)
                 .build();
-        return get(uri);
+        return HttpClientUtils.get(uri);
     }
 
     /**
