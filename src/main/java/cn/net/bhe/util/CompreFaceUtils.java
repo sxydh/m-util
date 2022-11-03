@@ -353,7 +353,7 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#verify-faces-from-a-given-image">Verify Faces from a Given Image</a>
      */
-    public static String faceCompare(String imageId, String file, String limit, String detProbThreshold, String facePlugins, String status) throws Exception {
+    public static String compareFace(String imageId, String file, String limit, String detProbThreshold, String facePlugins, String status) throws Exception {
         return HttpClientUtils.post(
                 new URIBuilder(String.format(API_FC_CMP, imageId))
                         .addParameter("limit", limit)
@@ -379,7 +379,7 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#face-detection-service">Face Detection Service</a>
      */
-    public static String faceDetect(String file, String limit, String detProbThreshold, String facePlugins, String status) throws Exception {
+    public static String detectFace(String file, String limit, String detProbThreshold, String facePlugins, String status) throws Exception {
         return HttpClientUtils.post(
                 new URIBuilder(API_FDTC)
                         .addParameter("limit", limit)
@@ -406,7 +406,7 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#face-verification-service">Face Verification Service</a>
      */
-    public static String faceVerify(String sourceImage, String targetImage, String limit, String detProbThreshold, String facePlugins, String status) throws Exception {
+    public static String verifyFace(String sourceImage, String targetImage, String limit, String detProbThreshold, String facePlugins, String status) throws Exception {
         return HttpClientUtils.post(
                 new URIBuilder(API_FCMP)
                         .addParameter("limit", limit)

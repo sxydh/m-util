@@ -163,9 +163,9 @@ class CompreFaceUtilsTest {
     }
 
     @Test
-    void faceCompare() {
+    void compareFace() {
         try {
-            String ret = CompreFaceUtils.faceCompare(
+            String ret = CompreFaceUtils.compareFace(
                     "91b9b033-ee7a-4044-8a67-45619f9b2c00",
                     IOUtils.resourceToString("/CompreFaceUtilsTest_face01.txt", StandardCharsets.UTF_8),
                     null,
@@ -179,9 +179,9 @@ class CompreFaceUtilsTest {
     }
 
     @Test
-    void faceDetect() {
+    void detectFace() {
         try {
-            String ret = CompreFaceUtils.faceDetect(
+            String ret = CompreFaceUtils.detectFace(
                     IOUtils.resourceToString("/CompreFaceUtilsTest_face01.txt", StandardCharsets.UTF_8),
                     null,
                     null,
@@ -194,9 +194,9 @@ class CompreFaceUtilsTest {
     }
 
     @Test
-    void faceVerify() {
+    void verifyFace() {
         try {
-            String ret = CompreFaceUtils.faceVerify(
+            String ret = CompreFaceUtils.verifyFace(
                     IOUtils.resourceToString("/CompreFaceUtilsTest_face01.txt", StandardCharsets.UTF_8),
                     IOUtils.resourceToString("/CompreFaceUtilsTest_face02.txt", StandardCharsets.UTF_8),
                     null,
