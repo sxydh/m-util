@@ -5,17 +5,17 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpException;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
@@ -35,6 +35,20 @@ public class HttpClientUtils {
                 httpGet.setHeaders(headers);
             }
             return getHttpResponse(closeableHttpClient, httpGet);
+        }
+    }
+
+    public static byte[] getAsBytes(URI uri) throws Exception {
+        return getAsBytes(uri, null);
+    }
+
+    public static byte[] getAsBytes(URI uri, Header[] headers) throws Exception {
+        try (CloseableHttpClient closeableHttpClient = HttpClients.createDefault()) {
+            HttpGet httpGet = new HttpGet(uri);
+            if (ObjectUtils.isNotEmpty(headers)) {
+                httpGet.setHeaders(headers);
+            }
+            return getHttpResponseAsBytes(closeableHttpClient, httpGet);
         }
     }
 
@@ -62,14 +76,69 @@ public class HttpClientUtils {
         }
     }
 
+    public static String put(URI uri, Map<String, Object> body) throws Exception {
+        return put(uri, null, body);
+    }
+
+    public static String put(URI uri, Header[] headers, Map<String, Object> body) throws Exception {
+        return put(uri, headers, JSON.toJSONString(body));
+    }
+
+    public static String put(URI uri, String body) throws Exception {
+        return put(uri, null, body);
+    }
+
+    public static String put(URI uri, Header[] headers, String body) throws Exception {
+        try (CloseableHttpClient closeableHttpClient = HttpClients.createDefault()) {
+            HttpPut httpPut = new HttpPut(uri);
+            if (ObjectUtils.isNotEmpty(headers)) {
+                httpPut.setHeaders(headers);
+            }
+            StringEntity stringEntity = new StringEntity(body, StandardCharsets.UTF_8);
+            httpPut.setEntity(stringEntity);
+            return getHttpResponse(closeableHttpClient, httpPut);
+        }
+    }
+
+    public static String delete(URI uri) throws Exception {
+        return delete(uri, null);
+    }
+
+    public static String delete(URI uri, Header[] headers) throws Exception {
+        try (CloseableHttpClient closeableHttpClient = HttpClients.createDefault()) {
+            HttpDelete httpDelete = new HttpDelete(uri);
+            if (ObjectUtils.isNotEmpty(headers)) {
+                httpDelete.setHeaders(headers);
+            }
+            return getHttpResponse(closeableHttpClient, httpDelete);
+        }
+    }
+
     private static String getHttpResponse(CloseableHttpClient closeableHttpClient, HttpUriRequest request) throws Exception {
         try (CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(request)) {
             String resStr = EntityUtils.toString(closeableHttpResponse.getEntity(), StandardCharsets.UTF_8).trim();
             int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
-            if (HttpStatus.SC_OK != statusCode) {
+            if (!Arrays.asList(HttpStatus.SC_OK, HttpStatus.SC_CREATED, HttpStatus.SC_ACCEPTED).contains(statusCode)) {
                 throw new HttpException(Objects.toString(resStr, String.valueOf(statusCode)));
             }
             return resStr;
+        }
+    }
+
+    private static byte[] getHttpResponseAsBytes(CloseableHttpClient closeableHttpClient, HttpUriRequest request) throws Exception {
+        try (CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(request)) {
+            int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
+            if (!Arrays.asList(HttpStatus.SC_OK, HttpStatus.SC_CREATED, HttpStatus.SC_ACCEPTED).contains(statusCode)) {
+                throw new HttpException(String.valueOf(statusCode));
+            }
+            InputStream inputStream = closeableHttpResponse.getEntity().getContent();
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            int i;
+            byte[] data = new byte[4];
+            while ((i = inputStream.read(data, 0, data.length)) > 0) {
+                buffer.write(data, 0, i);
+            }
+            return buffer.toByteArray();
         }
     }
 
