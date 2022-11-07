@@ -15,92 +15,103 @@ public class CompreFaceUtils {
     /**
      * 服务器
      */
-    private static final String SERVER = "http://172.18.5.138:8000/";
+    private final String server;
 
     /**
      * 检测服务KEY
      */
-    private static final String XAK_FD = "eda569dc-64ef-4338-a1a3-7c633f5f928c";
+    private final String xakFd;
     /**
      * 比对服务KEY
      */
-    private static final String XAK_FV = "37240f60-4d10-4db3-89d2-fcccd8c1d6c2";
+    private final String xakFv;
     /**
      * 识别服务KEY
      */
-    private static final String XAK_FR = "74b97ce2-031b-4062-a591-9929df7a0f9a";
+    private final String xakFr;
 
     /**
      * 添加主体
      */
-    private static final String API_SBJ_ADD = SERVER + "/api/v1/recognition/subjects";
+    private static final String API_SBJ_ADD = "/api/v1/recognition/subjects";
     /**
      * 更新主体
      */
-    private static final String API_SBJ_UPDATE = SERVER + "/api/v1/recognition/subjects/%s";
+    private static final String API_SBJ_UPDATE = "/api/v1/recognition/subjects/%s";
     /**
      * 删除主体
      */
-    private static final String API_SBJ_DEL = SERVER + "/api/v1/recognition/subjects/%s";
+    private static final String API_SBJ_DEL = "/api/v1/recognition/subjects/%s";
     /**
      * 删除主体(全量)
      */
-    private static final String API_SBJ_DEL_ALL = SERVER + "/api/v1/recognition/subjects";
+    private static final String API_SBJ_DEL_ALL = "/api/v1/recognition/subjects";
     /**
      * 主体列表
      */
-    private static final String API_SBJ_LIST = SERVER + "/api/v1/recognition/subjects";
+    private static final String API_SBJ_LIST = "/api/v1/recognition/subjects";
 
     /**
      * 添加人脸
      */
-    private static final String API_FC_ADD = SERVER + "/api/v1/recognition/faces";
+    private static final String API_FC_ADD = "/api/v1/recognition/faces";
     /**
      * 删除人脸
      */
-    private static final String API_FC_DEL = SERVER + "/api/v1/recognition/faces/%s";
+    private static final String API_FC_DEL = "/api/v1/recognition/faces/%s";
     /**
      * 删除人脸(主体)
      */
-    private static final String API_FC_DEL_ALL = SERVER + "/api/v1/recognition/faces";
+    private static final String API_FC_DEL_ALL = "/api/v1/recognition/faces";
     /**
      * 删除人脸(批量)
      */
-    private static final String API_FC_DEL_MULTI = SERVER + "/api/v1/recognition/faces/delete";
+    private static final String API_FC_DEL_MULTI = "/api/v1/recognition/faces/delete";
     /**
      * 人脸列表
      */
-    private static final String API_FC_LIST = SERVER + "/api/v1/recognition/faces";
+    private static final String API_FC_LIST = "/api/v1/recognition/faces";
     /**
      * 人脸下载
      */
-    private static final String API_FC_DL = SERVER + "/api/v1/recognition/faces/%s/img";
+    private static final String API_FC_DL = "/api/v1/recognition/faces/%s/img";
     /**
      * 人脸下载(不带Header)
      */
-    private static final String API_FC_DL_DIRECT = SERVER + "/api/v1/static/%s/images/%s";
+    private static final String API_FC_DL_DIRECT = "/api/v1/static/%s/images/%s";
     /**
      * 人脸搜索
      */
-    private static final String API_FC_RCN = SERVER + "/api/v1/recognition/recognize";
+    private static final String API_FC_RCN = "/api/v1/recognition/recognize";
     /**
      * 人脸比对
      */
-    private static final String API_FC_CMP = SERVER + "/api/v1/recognition/faces/%s/verify";
+    private static final String API_FC_CMP = "/api/v1/recognition/faces/%s/verify";
 
     /**
      * 人脸检测
      */
-    private static final String API_FDTC = SERVER + "/api/v1/detection/detect";
+    private static final String API_FDTC = "/api/v1/detection/detect";
     /**
      * 人脸比对
      */
-    private static final String API_FCMP = SERVER + "/api/v1/verification/verify";
+    private static final String API_FCMP = "/api/v1/verification/verify";
 
     private static final String HDN_CT = "Content-Type";
     private static final String HDN_XAK = "x-api-key";
 
     private static final String HDV_AJ = "application/json";
+
+    public CompreFaceUtils(
+            String server,
+            String xakFd,
+            String xakFv,
+            String xakFr) {
+        this.server = server;
+        this.xakFd = xakFd;
+        this.xakFv = xakFv;
+        this.xakFr = xakFr;
+    }
 
     /**
      * Add a Subject
@@ -110,12 +121,12 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#add-a-subject">Add a Subject</a>
      */
-    public static String addSubject(String subject) throws Exception {
+    public String addSubject(String subject) throws Exception {
         return HttpClientUtils.post(
-                new URI(API_SBJ_ADD),
+                new URI(server + API_SBJ_ADD),
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
-                        HDN_XAK, XAK_FR),
+                        HDN_XAK, xakFr),
                 Map.of("subject", subject));
     }
 
@@ -128,12 +139,12 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#rename-a-subject">Rename a Subject</a>
      */
-    public static String updateSubject(String oldSubject, String newSubject) throws Exception {
+    public String updateSubject(String oldSubject, String newSubject) throws Exception {
         return HttpClientUtils.put(
-                new URI(String.format(API_SBJ_UPDATE, oldSubject)),
+                new URI(server + String.format(API_SBJ_UPDATE, oldSubject)),
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
-                        HDN_XAK, XAK_FR),
+                        HDN_XAK, xakFr),
                 Map.of("subject", newSubject));
     }
 
@@ -145,12 +156,12 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#delete-all-subjects">Delete All Subjects</a>
      */
-    public static String deleteSubject(String subject) throws Exception {
+    public String deleteSubject(String subject) throws Exception {
         return HttpClientUtils.delete(
-                new URI(String.format(API_SBJ_DEL, subject)),
+                new URI(server + String.format(API_SBJ_DEL, subject)),
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
-                        HDN_XAK, XAK_FR));
+                        HDN_XAK, xakFr));
     }
 
     /**
@@ -160,12 +171,12 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#delete-all-subjects">Delete All Subjects</a>
      */
-    public static String deleteAllSubject() throws Exception {
+    public String deleteAllSubject() throws Exception {
         return HttpClientUtils.delete(
-                new URI(API_SBJ_DEL_ALL),
+                new URI(server + API_SBJ_DEL_ALL),
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
-                        HDN_XAK, XAK_FR));
+                        HDN_XAK, xakFr));
     }
 
     /**
@@ -175,12 +186,12 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#list-subjects">List Subjects</a>
      */
-    public static String listSubject() throws Exception {
+    public String listSubject() throws Exception {
         return HttpClientUtils.get(
-                new URI(API_SBJ_LIST),
+                new URI(server + API_SBJ_LIST),
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
-                        HDN_XAK, XAK_FR));
+                        HDN_XAK, xakFr));
     }
 
     /**
@@ -193,15 +204,15 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#add-an-example-of-a-subject">Add an Example of a Subject</a>
      */
-    public static String addFace(String subject, String detProbThreshold, String file) throws Exception {
+    public String addFace(String subject, String detProbThreshold, String file) throws Exception {
         return HttpClientUtils.post(
-                new URIBuilder(API_FC_ADD)
+                new URIBuilder(server + API_FC_ADD)
                         .addParameter("subject", subject)
                         .addParameter("det_prob_threshold", detProbThreshold)
                         .build(),
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
-                        HDN_XAK, XAK_FR),
+                        HDN_XAK, xakFr),
                 Map.of("file", file));
     }
 
@@ -213,10 +224,10 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#delete-an-example-of-the-subject-by-id">Delete an Example of the Subject by ID</a>
      */
-    public static String deleteFace(String imageId) throws Exception {
+    public String deleteFace(String imageId) throws Exception {
         return HttpClientUtils.delete(
-                new URI(String.format(API_FC_DEL, imageId)),
-                HttpClientUtils.buildHeaders(HDN_XAK, XAK_FR));
+                new URI(server + String.format(API_FC_DEL, imageId)),
+                HttpClientUtils.buildHeaders(HDN_XAK, xakFr));
     }
 
     /**
@@ -227,12 +238,12 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#delete-all-examples-of-the-subject-by-name">Delete All Examples of the Subject by Name</a>
      */
-    public static String deleteFaceAll(String subject) throws Exception {
+    public String deleteFaceAll(String subject) throws Exception {
         return HttpClientUtils.delete(
-                new URIBuilder(API_FC_DEL_ALL)
+                new URIBuilder(server + API_FC_DEL_ALL)
                         .addParameter("subject", subject)
                         .build(),
-                HttpClientUtils.buildHeaders(HDN_XAK, XAK_FR));
+                HttpClientUtils.buildHeaders(HDN_XAK, xakFr));
     }
 
     /**
@@ -243,12 +254,12 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#delete-multiple-examples">Delete Multiple Examples</a>
      */
-    public static String deleteFaceMulti(String[] imageIds) throws Exception {
+    public String deleteFaceMulti(String[] imageIds) throws Exception {
         return HttpClientUtils.post(
-                new URI(API_FC_DEL_MULTI),
+                new URI(server + API_FC_DEL_MULTI),
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
-                        HDN_XAK, XAK_FR),
+                        HDN_XAK, xakFr),
                 JSON.toJSONString(imageIds));
     }
 
@@ -262,14 +273,14 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#list-of-all-saved-examples-of-the-subject">List of All Saved Examples of the Subject</a>
      */
-    public static String listFace(String page, String size, String subject) throws Exception {
+    public String listFace(String page, String size, String subject) throws Exception {
         return HttpClientUtils.get(
-                new URIBuilder(API_FC_LIST)
+                new URIBuilder(server + API_FC_LIST)
                         .addParameter("page", page)
                         .addParameter("size", size)
                         .addParameter("subject", subject)
                         .build(),
-                HttpClientUtils.buildHeaders(HDN_XAK, XAK_FR));
+                HttpClientUtils.buildHeaders(HDN_XAK, xakFr));
     }
 
     /**
@@ -280,10 +291,10 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#download-an-image-example-of-the-subject-by-id">Download an Image example of the Subject by ID</a>
      */
-    public static byte[] downloadFace(String imageId) throws Exception {
+    public byte[] downloadFace(String imageId) throws Exception {
         return HttpClientUtils.getAsBytes(
-                new URI(String.format(API_FC_DL, imageId)),
-                HttpClientUtils.buildHeaders(HDN_XAK, XAK_FR));
+                new URI(server + String.format(API_FC_DL, imageId)),
+                HttpClientUtils.buildHeaders(HDN_XAK, xakFr));
     }
 
     /**
@@ -294,9 +305,9 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#direct-download-an-image-example-of-the-subject-by-id">Direct Download an Image example of the Subject by ID</a>
      */
-    public static byte[] downloadFaceDirect(String imageId) throws Exception {
+    public byte[] downloadFaceDirect(String imageId) throws Exception {
         return HttpClientUtils.getAsBytes(
-                new URI(String.format(API_FC_DL_DIRECT, XAK_FR, imageId)));
+                new URI(server + String.format(API_FC_DL_DIRECT, xakFr, imageId)));
     }
 
     /**
@@ -312,9 +323,9 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#recognize-faces-from-a-given-image">Recognize Faces from a Given Image</a>
      */
-    public static String recognizeFace(String file, String limit, String detProbThreshold, String predictionCount, String facePlugins, String status) throws Exception {
+    public String recognizeFace(String file, String limit, String detProbThreshold, String predictionCount, String facePlugins, String status) throws Exception {
         return HttpClientUtils.post(
-                new URIBuilder(API_FC_RCN)
+                new URIBuilder(server + API_FC_RCN)
                         .addParameter("limit", limit)
                         .addParameter("det_prob_threshold", detProbThreshold)
                         .addParameter("prediction_count", predictionCount)
@@ -323,7 +334,7 @@ public class CompreFaceUtils {
                         .build(),
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
-                        HDN_XAK, XAK_FR),
+                        HDN_XAK, xakFr),
                 Map.of("file", file));
     }
 
@@ -340,9 +351,9 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#verify-faces-from-a-given-image">Verify Faces from a Given Image</a>
      */
-    public static String compareFace(String imageId, String file, String limit, String detProbThreshold, String facePlugins, String status) throws Exception {
+    public String compareFace(String imageId, String file, String limit, String detProbThreshold, String facePlugins, String status) throws Exception {
         return HttpClientUtils.post(
-                new URIBuilder(String.format(API_FC_CMP, imageId))
+                new URIBuilder(server + String.format(API_FC_CMP, imageId))
                         .addParameter("limit", limit)
                         .addParameter("det_prob_threshold", detProbThreshold)
                         .addParameter("face_plugins", facePlugins)
@@ -350,7 +361,7 @@ public class CompreFaceUtils {
                         .build(),
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
-                        HDN_XAK, XAK_FR),
+                        HDN_XAK, xakFr),
                 Map.of("file", file));
     }
 
@@ -366,9 +377,9 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#face-detection-service">Face Detection Service</a>
      */
-    public static String detectFace(String file, String limit, String detProbThreshold, String facePlugins, String status) throws Exception {
+    public String detectFace(String file, String limit, String detProbThreshold, String facePlugins, String status) throws Exception {
         return HttpClientUtils.post(
-                new URIBuilder(API_FDTC)
+                new URIBuilder(server + API_FDTC)
                         .addParameter("limit", limit)
                         .addParameter("det_prob_threshold", detProbThreshold)
                         .addParameter("face_plugins", facePlugins)
@@ -376,7 +387,7 @@ public class CompreFaceUtils {
                         .build(),
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
-                        HDN_XAK, XAK_FD),
+                        HDN_XAK, xakFd),
                 Map.of("file", file));
     }
 
@@ -393,9 +404,9 @@ public class CompreFaceUtils {
      * @throws Exception exception
      * @see <a href="https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#face-verification-service">Face Verification Service</a>
      */
-    public static String verifyFace(String sourceImage, String targetImage, String limit, String detProbThreshold, String facePlugins, String status) throws Exception {
+    public String verifyFace(String sourceImage, String targetImage, String limit, String detProbThreshold, String facePlugins, String status) throws Exception {
         return HttpClientUtils.post(
-                new URIBuilder(API_FCMP)
+                new URIBuilder(server + API_FCMP)
                         .addParameter("limit", limit)
                         .addParameter("det_prob_threshold", detProbThreshold)
                         .addParameter("face_plugins", facePlugins)
@@ -403,7 +414,7 @@ public class CompreFaceUtils {
                         .build(),
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
-                        HDN_XAK, XAK_FV),
+                        HDN_XAK, xakFv),
                 Map.of("source_image", sourceImage,
                         "target_image", targetImage));
     }
