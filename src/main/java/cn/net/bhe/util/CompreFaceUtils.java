@@ -1,12 +1,10 @@
 package cn.net.bhe.util;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.http.Header;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.message.BasicHeader;
 
 import java.net.URI;
-import java.util.*;
+import java.util.Map;
 
 /**
  * @author Administrator
@@ -104,17 +102,6 @@ public class CompreFaceUtils {
 
     private static final String HDV_AJ = "application/json";
 
-    private static Header[] buildHeaders(String... kvs) {
-        List<Header> headers = new ArrayList<>();
-        Queue<String> qkvs = new LinkedList<>(Arrays.asList(kvs));
-        while (!qkvs.isEmpty()) {
-            String k = qkvs.poll();
-            String v = qkvs.poll();
-            headers.add(new BasicHeader(k, v));
-        }
-        return headers.toArray(Header[]::new);
-    }
-
     /**
      * Add a Subject
      *
@@ -126,7 +113,7 @@ public class CompreFaceUtils {
     public static String addSubject(String subject) throws Exception {
         return HttpClientUtils.post(
                 new URI(API_SBJ_ADD),
-                buildHeaders(
+                HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, XAK_FR),
                 Map.of("subject", subject));
@@ -144,7 +131,7 @@ public class CompreFaceUtils {
     public static String updateSubject(String oldSubject, String newSubject) throws Exception {
         return HttpClientUtils.put(
                 new URI(String.format(API_SBJ_UPDATE, oldSubject)),
-                buildHeaders(
+                HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, XAK_FR),
                 Map.of("subject", newSubject));
@@ -161,7 +148,7 @@ public class CompreFaceUtils {
     public static String deleteSubject(String subject) throws Exception {
         return HttpClientUtils.delete(
                 new URI(String.format(API_SBJ_DEL, subject)),
-                buildHeaders(
+                HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, XAK_FR));
     }
@@ -176,7 +163,7 @@ public class CompreFaceUtils {
     public static String deleteAllSubject() throws Exception {
         return HttpClientUtils.delete(
                 new URI(API_SBJ_DEL_ALL),
-                buildHeaders(
+                HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, XAK_FR));
     }
@@ -191,7 +178,7 @@ public class CompreFaceUtils {
     public static String listSubject() throws Exception {
         return HttpClientUtils.get(
                 new URI(API_SBJ_LIST),
-                buildHeaders(
+                HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, XAK_FR));
     }
@@ -212,7 +199,7 @@ public class CompreFaceUtils {
                         .addParameter("subject", subject)
                         .addParameter("det_prob_threshold", detProbThreshold)
                         .build(),
-                buildHeaders(
+                HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, XAK_FR),
                 Map.of("file", file));
@@ -229,7 +216,7 @@ public class CompreFaceUtils {
     public static String deleteFace(String imageId) throws Exception {
         return HttpClientUtils.delete(
                 new URI(String.format(API_FC_DEL, imageId)),
-                buildHeaders(HDN_XAK, XAK_FR));
+                HttpClientUtils.buildHeaders(HDN_XAK, XAK_FR));
     }
 
     /**
@@ -245,7 +232,7 @@ public class CompreFaceUtils {
                 new URIBuilder(API_FC_DEL_ALL)
                         .addParameter("subject", subject)
                         .build(),
-                buildHeaders(HDN_XAK, XAK_FR));
+                HttpClientUtils.buildHeaders(HDN_XAK, XAK_FR));
     }
 
     /**
@@ -259,7 +246,7 @@ public class CompreFaceUtils {
     public static String deleteFaceMulti(String[] imageIds) throws Exception {
         return HttpClientUtils.post(
                 new URI(API_FC_DEL_MULTI),
-                buildHeaders(
+                HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, XAK_FR),
                 JSON.toJSONString(imageIds));
@@ -282,7 +269,7 @@ public class CompreFaceUtils {
                         .addParameter("size", size)
                         .addParameter("subject", subject)
                         .build(),
-                buildHeaders(HDN_XAK, XAK_FR));
+                HttpClientUtils.buildHeaders(HDN_XAK, XAK_FR));
     }
 
     /**
@@ -296,7 +283,7 @@ public class CompreFaceUtils {
     public static byte[] downloadFace(String imageId) throws Exception {
         return HttpClientUtils.getAsBytes(
                 new URI(String.format(API_FC_DL, imageId)),
-                buildHeaders(HDN_XAK, XAK_FR));
+                HttpClientUtils.buildHeaders(HDN_XAK, XAK_FR));
     }
 
     /**
@@ -334,7 +321,7 @@ public class CompreFaceUtils {
                         .addParameter("face_plugins", facePlugins)
                         .addParameter("status", status)
                         .build(),
-                buildHeaders(
+                HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, XAK_FR),
                 Map.of("file", file));
@@ -361,7 +348,7 @@ public class CompreFaceUtils {
                         .addParameter("face_plugins", facePlugins)
                         .addParameter("status", status)
                         .build(),
-                buildHeaders(
+                HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, XAK_FR),
                 Map.of("file", file));
@@ -387,7 +374,7 @@ public class CompreFaceUtils {
                         .addParameter("face_plugins", facePlugins)
                         .addParameter("status", status)
                         .build(),
-                buildHeaders(
+                HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, XAK_FD),
                 Map.of("file", file));
@@ -414,7 +401,7 @@ public class CompreFaceUtils {
                         .addParameter("face_plugins", facePlugins)
                         .addParameter("status", status)
                         .build(),
-                buildHeaders(
+                HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, XAK_FV),
                 Map.of("source_image", sourceImage,

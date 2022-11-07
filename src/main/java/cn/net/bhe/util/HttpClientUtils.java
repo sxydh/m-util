@@ -6,23 +6,49 @@ import org.apache.http.Header;
 import org.apache.http.HttpException;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author Administrator
  */
 public class HttpClientUtils {
+
+    public static URI uri(String url, String... kvs) {
+        try {
+            URIBuilder uriBuilder = new URIBuilder(url);
+            Queue<String> qkvs = new LinkedList<>(Arrays.asList(Optional.ofNullable(kvs).orElse(new String[0])));
+            while (!qkvs.isEmpty()) {
+                String k = qkvs.poll();
+                String v = qkvs.poll();
+                uriBuilder.addParameter(k, v);
+            }
+            return uriBuilder.build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Header[] buildHeaders(String... kvs) {
+        List<Header> headers = new ArrayList<>();
+        Queue<String> qkvs = new LinkedList<>(Arrays.asList(Optional.ofNullable(kvs).orElse(new String[0])));
+        while (!qkvs.isEmpty()) {
+            String k = qkvs.poll();
+            String v = qkvs.poll();
+            headers.add(new BasicHeader(k, v));
+        }
+        return headers.toArray(Header[]::new);
+    }
 
     public static String get(URI uri) throws Exception {
         return get(uri, null);
