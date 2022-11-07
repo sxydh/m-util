@@ -20,8 +20,8 @@ public class BaiduFaceUtils {
     /**
      * 服务器地址
      */
-    private final String server = "https://aip.baidubce.com/";
-    private final String codeAccessTokenExpired = "110";
+    private static final String SERVER = "https://aip.baidubce.com/";
+    private static final String CODE_ACCESS_TOKEN_EXPIRED = "110";
     /**
      * 应用的API Key
      */
@@ -32,25 +32,23 @@ public class BaiduFaceUtils {
     private final String clientSecret;
     private String accessToken;
 
-    private final String hdnCt = "Content-Type";
-    private final String hdvAj = "application/json";
+    private static final String HDN_CT = "Content-Type";
+    private static final String HDV_AJ = "application/json";
 
     /**
      * 获取AccessToken
      */
-    private final String apiToken = "/oauth/2.0/token";
+    private static final String API_TOKEN = "/oauth/2.0/token";
     /**
      * 人脸检测
      */
-    private final String apiDetect = "/rest/2.0/face/v3/detect";
+    private static final String API_DETECT = "/rest/2.0/face/v3/detect";
 
-    private BaiduFaceUtils(String clientId, String clientSecret) {
+    public BaiduFaceUtils(
+            String clientId,
+            String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-    }
-
-    public static BaiduFaceUtils init(String clientId, String clientSecret) {
-        return new BaiduFaceUtils(clientId, clientSecret);
     }
 
     private String get(Supplier<URI> uriSupplier, Supplier<Header[]> headersSupplier) throws Exception {
@@ -58,7 +56,7 @@ public class BaiduFaceUtils {
         JSONObject retJson = JSON.parseObject(ret);
         String errorCode = retJson.getString("error_code");
         // accessToken检查
-        if (codeAccessTokenExpired.equals(errorCode)) {
+        if (CODE_ACCESS_TOKEN_EXPIRED.equals(errorCode)) {
             accessToken = getToken();
             return HttpClientUtils.get(uriSupplier.get(), headersSupplier.get());
         }
@@ -70,7 +68,7 @@ public class BaiduFaceUtils {
         JSONObject retJson = JSON.parseObject(ret);
         String errorCode = retJson.getString("error_code");
         // accessToken检查
-        if (codeAccessTokenExpired.equals(errorCode)) {
+        if (CODE_ACCESS_TOKEN_EXPIRED.equals(errorCode)) {
             ret = getToken();
             retJson = JSON.parseObject(ret);
             accessToken = retJson.getString("access_token");
@@ -88,7 +86,7 @@ public class BaiduFaceUtils {
      * @see <a href="https://cloud.baidu.com/apiexplorer/index.html?Product=GWSE-nmhroEsyriA&Api=GWAI-ZrbC4DkR2rP">获取AccessToken</a>
      */
     public String getToken() throws Exception {
-        return HttpClientUtils.get(new URIBuilder(server + apiToken)
+        return HttpClientUtils.get(new URIBuilder(SERVER + API_TOKEN)
                         .addParameter("grant_type", "client_credentials")
                         .addParameter("client_id", clientId)
                         .addParameter("client_secret", clientSecret)
@@ -96,10 +94,18 @@ public class BaiduFaceUtils {
                 null);
     }
 
+    /**
+     * 人脸检测
+     *
+     * @param image 图片信息
+     * @return result
+     * @throws Exception exception
+     * @see <a href="https://cloud.baidu.com/apiexplorer/index.html?Product=GWSE-nmhroEsyriA&Api=GWAI-w2sr6pvyXzJ">人脸检测</a>
+     */
     public String detectFace(String image) throws Exception {
-        return post(() -> HttpClientUtils.uri(server + apiDetect,
+        return post(() -> HttpClientUtils.uri(SERVER + API_DETECT,
                         "access_token", accessToken),
-                () -> HttpClientUtils.buildHeaders(hdnCt, hdvAj),
+                () -> HttpClientUtils.buildHeaders(HDN_CT, HDV_AJ),
                 () -> Map.of(
                         "image", image,
                         "image_type", "BASE64",

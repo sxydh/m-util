@@ -7,13 +7,11 @@ import java.nio.charset.StandardCharsets;
 
 class BaiduFaceUtilsTest {
 
-    static final String clientId = "";
-    static final String clientSecret = "";
+    static final BaiduFaceUtils baiduFaceUtils = new BaiduFaceUtils("", "");
 
     @Test
     void getToken() {
         try {
-            BaiduFaceUtils baiduFaceUtils = BaiduFaceUtils.init(clientId, clientSecret);
             String ret = baiduFaceUtils.getToken();
             System.out.println(ret);
         } catch (Exception e) {
@@ -24,7 +22,6 @@ class BaiduFaceUtilsTest {
     @Test
     void detectFace() {
         try {
-            BaiduFaceUtils baiduFaceUtils = BaiduFaceUtils.init(clientId, clientSecret);
             String ret = baiduFaceUtils.detectFace(IOUtils.resourceToString("/BaiduFaceUtilsTest_face01.txt", StandardCharsets.UTF_8));
             System.out.println(ret);
         } catch (Exception e) {
