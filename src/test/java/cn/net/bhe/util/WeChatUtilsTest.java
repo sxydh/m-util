@@ -2,8 +2,6 @@ package cn.net.bhe.util;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
 class WeChatUtilsTest {
 
     private String appid = "***";
@@ -38,10 +36,10 @@ class WeChatUtilsTest {
                     new SubscribedMessage(
                             "***",
                             "***",
-                            Map.of("k1", Map.of("value", "***"),
-                                    "k2", Map.of("value", "***"),
-                                    "k3", Map.of("value", "***"),
-                                    "k4", Map.of("value", "***")))
+                            CollUtils.map("k1", CollUtils.map("value", "***"),
+                                    "k2", CollUtils.map("value", "***"),
+                                    "k3", CollUtils.map("value", "***"),
+                                    "k4", CollUtils.map("value", "***")))
                             .setPage("***")
                             .setMiniprogramState("***")
                             .setLang("zh_CN"));

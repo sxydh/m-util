@@ -2,8 +2,6 @@ package cn.net.bhe.util;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
 class DingTalkUtilsTest {
 
     private static String corpId = "***";
@@ -62,16 +60,16 @@ class DingTalkUtilsTest {
             String res = DingTalkUtils.sendCorpConversationMessage(accessToken,
                     new CorpConversationMessage(
                             agentId,
-                            Map.of(
+                            CollUtils.map(
                                     "msgtype", "oa",
                                     "message_url", "http://dingtalk.com",
-                                    "oa", Map.of(
-                                            "head", Map.of("bgcolor", "FFBBBBBB"),
-                                            "body", Map.of(
+                                    "oa", CollUtils.map(
+                                            "head", CollUtils.map("bgcolor", "FFBBBBBB"),
+                                            "body", CollUtils.map(
                                                     "title", "***",
                                                     "author", "***",
-                                                    "form", Map.of(),
-                                                    "rich", Map.of("unit", "元", "num", Math.random()))))
+                                                    "form", CollUtils.map(),
+                                                    "rich", CollUtils.map("unit", "元", "num", Math.random()))))
                     ).setUseridList(userId)
             );
             System.out.println(res);

@@ -5,7 +5,6 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.UUID;
 
 class BaiduFaceUtilsTest {
@@ -107,7 +106,7 @@ class BaiduFaceUtilsTest {
                     IOUtils.resourceToString("/BaiduFaceUtilsTest_face01.txt", StandardCharsets.UTF_8),
                     "group01",
                     "user01",
-                    JSON.toJSONString(Map.of(
+                    JSON.toJSONString(CollUtils.map(
                             "age", "18",
                             "gender", "male",
                             "job", "boss")));

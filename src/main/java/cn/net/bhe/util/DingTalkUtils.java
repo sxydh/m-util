@@ -1,20 +1,9 @@
 package cn.net.bhe.util;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.PropertyNamingStrategy;
 import com.alibaba.fastjson.serializer.SerializeConfig;
-import org.apache.http.HttpException;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 
 import java.net.URI;
 import java.net.URL;
@@ -22,8 +11,6 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Formatter;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -130,7 +117,7 @@ public class DingTalkUtils {
         URI uri = new URIBuilder("https://oapi.dingtalk.com/topapi/message/corpconversation/getsendprogress")
                 .setParameter("access_token", accessToken)
                 .build();
-        return HttpClientUtils.post(uri, Map.of(
+        return HttpClientUtils.post(uri, CollUtils.map(
                 "agent_id", agentId,
                 "task_id", taskId
         ));
@@ -149,7 +136,7 @@ public class DingTalkUtils {
         URI uri = new URIBuilder("https://oapi.dingtalk.com/topapi/message/corpconversation/recall")
                 .setParameter("access_token", accessToken)
                 .build();
-        return HttpClientUtils.post(uri, Map.of(
+        return HttpClientUtils.post(uri, CollUtils.map(
                 "agent_id", agentId,
                 "msg_task_id", taskId
         ));

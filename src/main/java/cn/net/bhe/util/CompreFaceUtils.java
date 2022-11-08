@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.net.URI;
-import java.util.Map;
 
 /**
  * @author Administrator
@@ -127,7 +126,7 @@ public class CompreFaceUtils {
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, xakFr),
-                Map.of("subject", subject));
+                CollUtils.map("subject", subject));
     }
 
     /**
@@ -145,7 +144,7 @@ public class CompreFaceUtils {
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, xakFr),
-                Map.of("subject", newSubject));
+                CollUtils.map("subject", newSubject));
     }
 
     /**
@@ -213,7 +212,7 @@ public class CompreFaceUtils {
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, xakFr),
-                Map.of("file", file));
+                CollUtils.map("file", file));
     }
 
     /**
@@ -335,7 +334,7 @@ public class CompreFaceUtils {
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, xakFr),
-                Map.of("file", file));
+                CollUtils.map("file", file));
     }
 
     /**
@@ -362,7 +361,7 @@ public class CompreFaceUtils {
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, xakFr),
-                Map.of("file", file));
+                CollUtils.map("file", file));
     }
 
     /**
@@ -388,7 +387,7 @@ public class CompreFaceUtils {
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, xakFd),
-                Map.of("file", file));
+                CollUtils.map("file", file));
     }
 
     /**
@@ -415,7 +414,7 @@ public class CompreFaceUtils {
                 HttpClientUtils.buildHeaders(
                         HDN_CT, HDV_AJ,
                         HDN_XAK, xakFv),
-                Map.of("source_image", sourceImage,
+                CollUtils.map("source_image", sourceImage,
                         "target_image", targetImage));
     }
 

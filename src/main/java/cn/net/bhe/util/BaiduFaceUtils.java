@@ -146,7 +146,7 @@ public class BaiduFaceUtils {
         return post(() -> HttpClientUtils.uri(SERVER + API_DETECT,
                         "access_token", accessToken),
                 () -> HttpClientUtils.buildHeaders(HDN_CT, HDV_AJ),
-                () -> Map.of(
+                () -> CollUtils.map(
                         "image", image,
                         "image_type", "BASE64",
                         "face_field", "age,beauty,expression,face_shape,gender,glasses,landmark,landmark150,quality,eye_status,emotion,face_type,mask,spoofing",
@@ -166,7 +166,7 @@ public class BaiduFaceUtils {
         return post(() -> HttpClientUtils.uri(SERVER + API_GROUP_ADD,
                         "access_token", accessToken),
                 () -> HttpClientUtils.buildHeaders(HDN_CT, HDV_AJ),
-                () -> Map.of(
+                () -> CollUtils.map(
                         "group_id", groupId));
     }
 
@@ -183,7 +183,7 @@ public class BaiduFaceUtils {
         return post(() -> HttpClientUtils.uri(SERVER + API_GROUP_LIST,
                         "access_token", accessToken),
                 () -> HttpClientUtils.buildHeaders(HDN_CT, HDV_AJ),
-                () -> Map.of(
+                () -> CollUtils.map(
                         "start", start,
                         "length", length));
     }
@@ -200,7 +200,7 @@ public class BaiduFaceUtils {
         return post(() -> HttpClientUtils.uri(SERVER + API_GROUP_DELETE,
                         "access_token", accessToken),
                 () -> HttpClientUtils.buildHeaders(HDN_CT, HDV_AJ),
-                () -> Map.of(
+                () -> CollUtils.map(
                         "group_id", groupId));
     }
 
@@ -218,7 +218,7 @@ public class BaiduFaceUtils {
         return post(() -> HttpClientUtils.uri(SERVER + API_USER_LIST,
                         "access_token", accessToken),
                 () -> HttpClientUtils.buildHeaders(HDN_CT, HDV_AJ),
-                () -> Map.of(
+                () -> CollUtils.map(
                         "group_id", groupId,
                         "start", start,
                         "length", length));
@@ -237,7 +237,7 @@ public class BaiduFaceUtils {
         return post(() -> HttpClientUtils.uri(SERVER + API_USER_GET,
                         "access_token", accessToken),
                 () -> HttpClientUtils.buildHeaders(HDN_CT, HDV_AJ),
-                () -> Map.of(
+                () -> CollUtils.map(
                         "group_id", groupId,
                         "user_id", userId));
     }
@@ -255,7 +255,7 @@ public class BaiduFaceUtils {
         return post(() -> HttpClientUtils.uri(SERVER + API_USER_DELETE,
                         "access_token", accessToken),
                 () -> HttpClientUtils.buildHeaders(HDN_CT, HDV_AJ),
-                () -> Map.of(
+                () -> CollUtils.map(
                         "group_id", groupId,
                         "user_id", userId));
     }
@@ -275,7 +275,7 @@ public class BaiduFaceUtils {
         return post(() -> HttpClientUtils.uri(SERVER + API_FACE_ADD,
                         "access_token", accessToken),
                 () -> HttpClientUtils.buildHeaders(HDN_CT, HDV_AJ),
-                () -> Map.of(
+                () -> CollUtils.map(
                         "image", image,
                         "image_type", "BASE64",
                         "group_id", groupId,
@@ -299,7 +299,7 @@ public class BaiduFaceUtils {
         return post(() -> HttpClientUtils.uri(SERVER + API_FACE_LIST,
                         "access_token", accessToken),
                 () -> HttpClientUtils.buildHeaders(HDN_CT, HDV_AJ),
-                () -> Map.of(
+                () -> CollUtils.map(
                         "group_id", groupId,
                         "user_id", userId));
     }
@@ -319,7 +319,7 @@ public class BaiduFaceUtils {
         return post(() -> HttpClientUtils.uri(SERVER + API_FACE_DELETE,
                         "access_token", accessToken),
                 () -> HttpClientUtils.buildHeaders(HDN_CT, HDV_AJ),
-                () -> Map.of(
+                () -> CollUtils.map(
                         "logId", logId,
                         "group_id", groupId,
                         "user_id", userId,
@@ -340,7 +340,7 @@ public class BaiduFaceUtils {
         return post(() -> HttpClientUtils.uri(SERVER + API_FACE_SEARCH,
                         "access_token", accessToken),
                 () -> HttpClientUtils.buildHeaders(HDN_CT, HDV_AJ),
-                () -> Map.of(
+                () -> CollUtils.map(
                         "image", image,
                         "image_type", "BASE64",
                         "group_id_list", groupIdList,
