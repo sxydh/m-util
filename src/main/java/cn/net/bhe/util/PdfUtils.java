@@ -13,12 +13,12 @@ import java.io.InputStream;
  */
 public class PdfUtils {
 
-    public static String pdf2base64(InputStream inputStream) throws Exception {
+    public static String pdf2base64(InputStream inputStream, int pageIndex, float scale, String formatName) throws Exception {
         PDDocument pdDocument = PDDocument.load(inputStream);
         PDFRenderer pdfRenderer = new PDFRenderer(pdDocument);
-        BufferedImage image = pdfRenderer.renderImage(0);
+        BufferedImage image = pdfRenderer.renderImage(pageIndex, scale);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        ImageIO.write(image, "png", os);
+        ImageIO.write(image, formatName, os);
         return IOUtils.encodeBase64(os.toByteArray());
     }
 
