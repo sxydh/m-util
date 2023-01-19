@@ -1,5 +1,7 @@
 package cn.net.bhe.util;
 
+import com.spire.pdf.FileFormat;
+import com.spire.pdf.PdfDocument;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
@@ -20,6 +22,12 @@ public class PdfUtils {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         ImageIO.write(image, formatName, os);
         return IOUtils.encodeBase64(os.toByteArray());
+    }
+
+    public static ByteArrayOutputStream[] pdf2svg(InputStream inputStream) throws Exception {
+        PdfDocument pdf = new PdfDocument();
+        pdf.loadFromBytes(inputStream.readAllBytes());
+        return pdf.saveToStream(FileFormat.SVG);
     }
 
 }
