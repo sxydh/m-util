@@ -58,4 +58,8 @@ public class BtringUtils extends StringUtils {
         return ret.toString();
     }
 
+    public static String camelToSnake(String string) {
+        return string.replaceAll("([a-z])([A-Z]+)", "$1_$2").toLowerCase();
+    }
+
 }

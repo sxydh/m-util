@@ -24,4 +24,13 @@ class BtringUtilsTest {
         }
     }
 
+    @Test
+    void camelToSnake() {
+        try {
+            String ret = BtringUtils.camelToSnake("SpringBoot");
+            System.out.println(ret);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
