@@ -9,12 +9,33 @@ public final class FlUtils {
     public static final String USER_HOME = "user.home";
     public static final String DESKTOP = "Desktop";
 
+    public static boolean mkdir(String path) {
+        String dir = StrUtils.EMPTY;
+        for (int i = 0; i < path.length(); i++) {
+            char c = path.charAt(i);
+            dir += c;
+            if (c == File.separatorChar || i == path.length() - 1) {
+                File file = new File(dir);
+                if (!file.exists()) {
+                    if (!file.mkdir()) {
+                        return Boolean.FALSE;
+                    }
+                }
+            }
+        }
+        return Boolean.TRUE;
+    }
+
+    public static String getDesktop() {
+        return System.getProperty(USER_HOME) + File.separator + DESKTOP;
+    }
+
     public static void writeToDesktop(String value) throws Exception {
         writeToDesktop(value, String.valueOf(new Snowflake().nextId()), false);
     }
 
     public static void writeToDesktop(String value, String fileName, boolean append) throws Exception {
-        fileName = System.getProperty(USER_HOME) + File.separator + DESKTOP + File.separator + fileName;
+        fileName = getDesktop() + File.separator + fileName;
         write(value, fileName, append);
     }
 
