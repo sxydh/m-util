@@ -9,19 +9,6 @@ public final class FlUtils {
     public static final String USER_HOME = "user.home";
     public static final String DESKTOP = "Desktop";
 
-    public static boolean delete(File file) {
-        if (file.isFile()) {
-            return file.delete();
-        }
-        File[] ifiles = file.listFiles();
-        for (File ifile : ifiles) {
-            if (!delete(ifile)) {
-                return Boolean.FALSE;
-            }
-        }
-        return file.delete();
-    }
-
     public static void writeToDesktop(String value) throws Exception {
         writeToDesktop(value, String.valueOf(new Snowflake().nextId()), false);
     }
@@ -38,6 +25,19 @@ public final class FlUtils {
         bufferedWriter.flush();
         fileWriter.close();
         bufferedWriter.close();
+    }
+
+    public static boolean delete(File file) {
+        if (file.isFile()) {
+            return file.delete();
+        }
+        File[] ifiles = file.listFiles();
+        for (File ifile : ifiles) {
+            if (!delete(ifile)) {
+                return Boolean.FALSE;
+            }
+        }
+        return file.delete();
     }
 
 }
