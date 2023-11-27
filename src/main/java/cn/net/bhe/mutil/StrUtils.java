@@ -1,5 +1,7 @@
 package cn.net.bhe.mutil;
 
+import java.util.Random;
+
 public final class StrUtils {
 
     public static final String EMPTY = "";
@@ -8,6 +10,15 @@ public final class StrUtils {
     public static final String SLASH = "/";
     public static final String DOT = ".";
     public static final String ZERO = "0";
+    private static final Random RANDOM = new Random();
+
+    public static String randomChs(int len) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            sb.append((char) (0x4e00 + RANDOM.nextInt(0x9fa5 - 0x4e00 + 1)));
+        }
+        return sb.toString();
+    }
 
     public static boolean isEmpty(String value) {
         return value == null || value.trim().isEmpty();
