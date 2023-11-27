@@ -7,6 +7,7 @@ import java.io.FileWriter;
 public final class FlUtils {
 
     public static final String USER_HOME = "user.home";
+    public static final String USER_DIR = "user.dir";
     public static final String DESKTOP = "Desktop";
 
     public static boolean mkdir(String path) {
@@ -24,6 +25,10 @@ public final class FlUtils {
             }
         }
         return Boolean.TRUE;
+    }
+
+    public static String getRoot() {
+        return System.getProperty(USER_DIR);
     }
 
     public static String getDesktop() {

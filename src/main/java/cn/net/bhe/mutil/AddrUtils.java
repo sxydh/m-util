@@ -3,11 +3,13 @@ package cn.net.bhe.mutil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.io.BufferedInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -43,13 +45,44 @@ public class AddrUtils {
             if (nodeList != null) {
                 return;
             }
-            As.isTrue(config != null && config.length == INIT_CONFIG.length);
-            System.arraycopy(config, 0, INIT_CONFIG, 0, config.length);
-            String res = get(URL_TJYQHDMHCXHFDM + "/index.html");
-            List<Node> provinceList = parseHtml(res, "provincetr", false, true);
-            initProvince(provinceList);
-            nodeList = provinceList;
-            addrList = TreeUtils.pathList(nodeList, "name", "children", StrUtils.SLASH);
+
+            try {
+                String saveDir = FlUtils.getRoot() + File.separator + "tmp";
+                FlUtils.mkdir(saveDir);
+                String savePath = saveDir + File.separator + AddrUtils.class.getName() + StrUtils.DOT;
+                Path nodeListPath = Paths.get(savePath + "nodeList");
+                Path addrListPath = Paths.get(savePath + "addrList");
+                if (Files.exists(nodeListPath) && Files.exists(addrListPath)) {
+                    ObjectInputStream inputStream = new ObjectInputStream(Files.newInputStream(nodeListPath));
+                    // noinspection ReassignedVariable,unchecked
+                    nodeList = (List<Node>) inputStream.readObject();
+                    inputStream.close();
+                    inputStream = new ObjectInputStream(Files.newInputStream(addrListPath));
+                    // noinspection ReassignedVariable,unchecked
+                    addrList = (List<String>) inputStream.readObject();
+                    inputStream.close();
+                    return;
+                }
+
+                As.isTrue(config != null && config.length == INIT_CONFIG.length);
+                System.arraycopy(config, 0, INIT_CONFIG, 0, config.length);
+                String res = get(URL_TJYQHDMHCXHFDM + "/index.html");
+                List<Node> provinceList = parseHtml(res, "provincetr", false, true);
+                initProvince(provinceList);
+                nodeList = provinceList;
+                addrList = TreeUtils.pathList(nodeList, "name", "children", StrUtils.SLASH);
+
+                if (CollUtils.isNotEmpty(nodeList) && CollUtils.isNotEmpty(addrList)) {
+                    ObjectOutputStream outputStream = new ObjectOutputStream(Files.newOutputStream(nodeListPath));
+                    outputStream.writeObject(nodeList);
+                    outputStream.close();
+                    outputStream = new ObjectOutputStream(Files.newOutputStream(addrListPath));
+                    outputStream.writeObject(addrList);
+                    outputStream.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -204,7 +237,7 @@ public class AddrUtils {
 
     @Data
     @Accessors(chain = true)
-    public static class Node {
+    public static class Node implements Serializable {
         private String id;
         private String name;
         private String href;

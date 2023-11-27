@@ -7,12 +7,12 @@ class AddrUtilsTest {
 
     @BeforeAll
     static void beforeAll() {
-        AddrUtils.init(new int[]{1, 1, 2, 1, 1});
+        AddrUtils.init(new int[]{1, 1, 2, 1, -1});
     }
 
     @Test
     void randomAddr() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             System.out.println(AddrUtils.randomAddr());
         }
     }

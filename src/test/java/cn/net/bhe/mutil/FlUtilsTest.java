@@ -5,6 +5,11 @@ import org.junit.jupiter.api.Test;
 class FlUtilsTest {
 
     @Test
+    void getRoot() {
+        System.out.println(FlUtils.getRoot());
+    }
+
+    @Test
     void getDesktop() {
         System.out.println(FlUtils.getDesktop());
     }

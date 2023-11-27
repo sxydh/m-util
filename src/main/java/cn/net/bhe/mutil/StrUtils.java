@@ -6,6 +6,7 @@ public final class StrUtils {
     public static final String SPACE = " ";
     public static final String COMMA = ",";
     public static final String SLASH = "/";
+    public static final String DOT = ".";
     public static final String ZERO = "0";
 
     public static boolean isEmpty(String value) {
