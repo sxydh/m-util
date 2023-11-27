@@ -3,10 +3,10 @@ package cn.net.bhe.mutil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.io.File;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -217,22 +217,7 @@ public class AddrUtils {
     }
 
     private static String get(String urlStr) {
-        try {
-            URL url = new URL(urlStr);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            try (InputStream inputStream = conn.getInputStream();
-                 BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
-                byte[] bytes = new byte[1024];
-                StringBuilder stringBuilder = new StringBuilder();
-                while (bufferedInputStream.read(bytes) != -1) {
-                    stringBuilder.append(new String(bytes, StandardCharsets.UTF_8));
-                }
-                return stringBuilder.toString();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return StrUtils.EMPTY;
-        }
+        return HttpUtils.get(urlStr);
     }
 
     @Data
