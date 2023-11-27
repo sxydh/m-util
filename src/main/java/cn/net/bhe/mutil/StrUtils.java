@@ -3,6 +3,9 @@ package cn.net.bhe.mutil;
 public final class StrUtils {
 
     public static final String EMPTY = "";
+    public static final String SPACE = " ";
+    public static final String COMMA = ",";
+    public static final String SLASH = "/";
     public static final String ZERO = "0";
 
     public static boolean isEmpty(String value) {
