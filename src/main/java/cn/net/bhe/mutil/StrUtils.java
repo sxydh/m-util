@@ -3,6 +3,7 @@ package cn.net.bhe.mutil;
 public final class StrUtils {
 
     public static final String EMPTY = "";
+    public static final String ZERO = "0";
 
     public static boolean isEmpty(String value) {
         return value == null || value.trim().isEmpty();
@@ -25,6 +26,57 @@ public final class StrUtils {
 
     public static int compareTo(String val1, String val2) {
         return toString(val1, EMPTY).length() - toString(val2, EMPTY).length();
+    }
+
+    public static String trimLeft(String str, String remove) {
+        return trim(str, remove, true, false);
+    }
+
+    public static String trimRight(String str, String remove) {
+        return trim(str, remove, false, true);
+    }
+
+    public static String trim(String str, String remove) {
+        return trim(str, remove, true, true);
+    }
+
+    public static String trim(String str, String remove, boolean left, boolean right) {
+        if (isEmpty(str) || isEmpty(remove)) {
+            return str;
+        }
+        int begin = 0;
+        int end = str.length() - 1;
+        /* left */
+        int i = 0;
+        int u = 0;
+        if (left) {
+            while (i < str.length()) {
+                if (str.charAt(i++) == remove.charAt(u++)) {
+                    if (u == remove.length()) {
+                        begin += remove.length();
+                        u = 0;
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
+        /* right */
+        int j = str.length() - 1;
+        int v = remove.length() - 1;
+        if (right) {
+            while (j >= 0 && j >= i) {
+                if (str.charAt(j--) == remove.charAt(v--)) {
+                    if (v == -1) {
+                        end -= remove.length();
+                        v = 0;
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
+        return str.substring(begin, end + 1);
     }
 
 }
