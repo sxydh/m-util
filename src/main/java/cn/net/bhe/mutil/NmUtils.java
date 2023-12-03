@@ -58,9 +58,17 @@ public class NmUtils {
                     "宇文", "司徒", "司空", "亓官", "司寇", "子车", "颛孙", "端木", "巫马", "公西",
                     "漆雕", "壤驷", "公良", "夹谷", "宰父", "微生", "羊舌");
 
+    public static String randomName() {
+        return randomName(NumUtils.ONE + RANDOM.nextInt(NumUtils.TWO) + RANDOM.nextInt(NumUtils.THREE));
+    }
+
     public static String randomName(int maxLen) {
         String familyName = FAMILY_NAME_LIST.get(RANDOM.nextInt(FAMILY_NAME_LIST.size()));
-        String givenName = StrUtils.randomChs(Math.max(RANDOM.nextInt(maxLen - familyName.length()) + 1, NumUtils.ONE));
+        int givenNameLen = maxLen - familyName.length();
+        givenNameLen = Math.max(givenNameLen, NumUtils.ONE);
+        givenNameLen = RANDOM.nextInt(givenNameLen);
+        givenNameLen = Math.max(givenNameLen, NumUtils.ONE);
+        String givenName = StrUtils.randomChs(givenNameLen);
         return familyName + givenName;
     }
 

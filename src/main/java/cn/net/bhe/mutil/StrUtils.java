@@ -10,6 +10,8 @@ public final class StrUtils {
     public static final String SLASH = "/";
     public static final String DOT = ".";
     public static final String ZERO = "0";
+    public static final String TMP = "tmp";
+    public static final String HELLO_WORLD = "Hello, World!";
     private static final Random RANDOM = new Random();
 
     public static String randomChs(int len) {
@@ -49,6 +51,10 @@ public final class StrUtils {
 
     public static String trimRight(String str, String remove) {
         return trim(str, remove, false, true);
+    }
+
+    public static String trim(String str) {
+        return trim(str, SPACE);
     }
 
     public static String trim(String str, String remove) {

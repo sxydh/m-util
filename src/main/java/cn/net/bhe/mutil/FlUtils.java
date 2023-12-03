@@ -31,6 +31,10 @@ public final class FlUtils {
         return System.getProperty(USER_DIR);
     }
 
+    public static String getRootTmp() {
+        return getRoot() + File.separator + StrUtils.TMP;
+    }
+
     public static String getDesktop() {
         return System.getProperty(USER_HOME) + File.separator + DESKTOP;
     }

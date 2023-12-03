@@ -2,6 +2,14 @@ package cn.net.bhe.mutil;
 
 public class ArrUtils {
 
+    public static boolean isNotEmpty(Object[] arr) {
+        return !isEmpty(arr);
+    }
+
+    public static boolean isEmpty(Object[] arr) {
+        return arr == null || arr.length == 0;
+    }
+
     public static <T> T firstNotNull(T... arr) {
         if (arr == null) {
             return null;
