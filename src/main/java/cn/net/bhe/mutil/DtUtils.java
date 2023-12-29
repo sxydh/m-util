@@ -15,6 +15,11 @@ public final class DtUtils {
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
     public static final String YYYY_MM_DD_HH24_MI_SS = "yyyy-MM-dd HH:mm:ss";
     public static final String YYYY_MM_DD_HH24_MI_SS_SSSSSS = "yyyy-MM-dd HH:mm:ss.SSSSSS";
+    public static final String YYYYMMDDHH24MISSSSS = "yyyyMMddHHmmssSSS";
+
+    public static String ts17() {
+        return format(date(), YYYYMMDDHH24MISSSSS);
+    }
 
     public static Date date() {
         return new Date();
