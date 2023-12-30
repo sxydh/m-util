@@ -3,230 +3,103 @@ package cn.net.bhe.mutil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.io.File;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-/**
- * 数据来源：<a href="http://www.stats.gov.cn/sj/tjbz/qhdm/">统计用区划代码和城乡划分代码</a>，<a href="https://github.com/modood/Administrative-divisions-of-China">Administrative-divisions-of-China</a>。
- */
-@SuppressWarnings("CallToPrintStackTrace")
 public class AddrUtils {
 
-    private static final String URL_TJYQHDMHCXHFDM = "http://www.stats.gov.cn/sj/tjbz/tjyqhdmhcxhfdm/" + DtUtils.format().substring(0, 4);
-    private static final Object INIT_LOCK = new Object();
-    private static final int[] INIT_CONFIG = new int[]{3, 3, 3, 3, -1};
+    private static final List<Node> CHN_LIST;
     private static final Random RANDOM = new Random();
-    private static List<Node> nodeList = null;
-    private static List<String> addrList = null;
 
-    public static String randomAddr() {
-        if (CollUtils.isEmpty(addrList)) {
-            return StrUtils.EMPTY;
-        }
-        return addrList.get(RANDOM.nextInt(addrList.size()));
-    }
-
-    public static void init() {
-        init(INIT_CONFIG);
-    }
-
-    public static void init(int[] config) {
-        synchronized (INIT_LOCK) {
-            if (nodeList != null) {
-                return;
-            }
-
-            try {
-                String saveDir = FlUtils.getRoot() + File.separator + "tmp";
-                FlUtils.mkdir(saveDir);
-                String savePath = saveDir + File.separator + AddrUtils.class.getName() + StrUtils.DOT;
-                Path nodeListPath = Paths.get(savePath + "nodeList");
-                Path addrListPath = Paths.get(savePath + "addrList");
-                if (Files.exists(nodeListPath) && Files.exists(addrListPath)) {
-                    ObjectInputStream inputStream = new ObjectInputStream(Files.newInputStream(nodeListPath));
-                    // noinspection ReassignedVariable,unchecked
-                    nodeList = (List<Node>) inputStream.readObject();
-                    inputStream.close();
-                    inputStream = new ObjectInputStream(Files.newInputStream(addrListPath));
-                    // noinspection ReassignedVariable,unchecked
-                    addrList = (List<String>) inputStream.readObject();
-                    inputStream.close();
-                    return;
-                }
-
-                As.isTrue(config != null && config.length == INIT_CONFIG.length);
-                System.arraycopy(config, 0, INIT_CONFIG, 0, config.length);
-                String res = get(URL_TJYQHDMHCXHFDM + "/index.html");
-                List<Node> provinceList = parseHtml(res, "provincetr", false, true);
-                initProvince(provinceList);
-                nodeList = provinceList;
-                addrList = TreeUtils.pathList(nodeList, "name", "children", StrUtils.SLASH);
-
-                if (CollUtils.isNotEmpty(nodeList) && CollUtils.isNotEmpty(addrList)) {
-                    ObjectOutputStream outputStream = new ObjectOutputStream(Files.newOutputStream(nodeListPath));
-                    outputStream.writeObject(nodeList);
-                    outputStream.close();
-                    outputStream = new ObjectOutputStream(Files.newOutputStream(addrListPath));
-                    outputStream.writeObject(addrList);
-                    outputStream.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    static {
+        try {
+            Node node = new Node();
+            Node.parseList(ZipUtils.deComp("AddrUtils.CHN_LIST"), 0, node);
+            CHN_LIST = node.getChildren();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static List<Node> get() {
-        return nodeList;
+    public static String ranChn(int depth) {
+        return ranChn(depth, StrUtils.SLASH);
     }
 
-    public static void clear() {
-        nodeList = null;
-        addrList = null;
-    }
-
-    private static void initProvince(List<Node> provinceList) {
-        while (INIT_CONFIG[0] != -1 && INIT_CONFIG[0] < provinceList.size()) {
-            provinceList.remove(RANDOM.nextInt(provinceList.size()));
+    public static String ranChn(int depth, String separator) {
+        if (depth <= 0) return StrUtils.EMPTY;
+        StringBuilder builder = new StringBuilder();
+        List<Node> nodes = CHN_LIST;
+        for (int i = 1; i <= depth; i++) {
+            if (CollUtils.isEmpty(nodes)) break;
+            Node node = nodes.get(RANDOM.nextInt(nodes.size()));
+            builder.append(separator).append(node.name);
+            nodes = node.getChildren();
         }
-        for (Node province : provinceList) {
-            if (StrUtils.isEmpty(province.getHref())) {
-                continue;
-            }
-            String res = get(URL_TJYQHDMHCXHFDM + "/" + province.getHref());
-            List<Node> cityList = parseHtml(res, "citytr");
-            initCity(province, cityList);
-            province.setChildren(cityList);
-        }
-    }
-
-    private static void initCity(Node province, List<Node> cityList) {
-        while (INIT_CONFIG[1] != -1 && INIT_CONFIG[1] < cityList.size()) {
-            cityList.remove(RANDOM.nextInt(cityList.size()));
-        }
-        for (Node city : cityList) {
-            if (StrUtils.isEmpty(city.getHref())) {
-                continue;
-            }
-            String res = get(URL_TJYQHDMHCXHFDM + "/" + city.getHref());
-            List<Node> countyList = parseHtml(res, "countytr");
-            initCounty(province, city, countyList);
-            city.setChildren(countyList);
-        }
-    }
-
-    private static void initCounty(Node province, Node city, List<Node> countyList) {
-        while (INIT_CONFIG[2] != -1 && INIT_CONFIG[2] < countyList.size()) {
-            countyList.remove(RANDOM.nextInt(countyList.size()));
-        }
-        for (Node county : countyList) {
-            if (StrUtils.isEmpty(county.getHref())) {
-                continue;
-            }
-            String res = get(URL_TJYQHDMHCXHFDM + "/" + province.getId() + "/" + county.getHref());
-            List<Node> townList = parseHtml(res, "towntr");
-            initTown(province, city, townList);
-            county.setChildren(townList);
-        }
-    }
-
-    private static void initTown(Node province, Node city, List<Node> townList) {
-        while (INIT_CONFIG[3] != -1 && INIT_CONFIG[3] < townList.size()) {
-            townList.remove(RANDOM.nextInt(townList.size()));
-        }
-        for (Node town : townList) {
-            if (StrUtils.isEmpty(town.getHref())) {
-                continue;
-            }
-            String pid = province.getId();
-            String cid = city.getId().substring(2, 4);
-            String res = get(URL_TJYQHDMHCXHFDM + "/" + pid + "/" + cid + "/" + town.getHref());
-            List<Node> villageList = parseHtml(res, "villagetr", true, false);
-            initVillage(villageList);
-            town.setChildren(villageList);
-        }
-    }
-
-    private static void initVillage(List<Node> villageList) {
-        while (INIT_CONFIG[4] != -1 && INIT_CONFIG[4] < villageList.size()) {
-            villageList.remove(RANDOM.nextInt(villageList.size()));
-        }
-    }
-
-    private static List<Node> parseHtml(String html, String classFlag) {
-        return parseHtml(html, classFlag, true, true);
-    }
-
-    private static List<Node> parseHtml(String html, String classFlag, boolean hasCode, boolean hasHref) {
-        String pattern = "(<tr class=\"" + classFlag + "\">)([\\s\\S]+?)(</tr>)";
-        Pattern compile = Pattern.compile(pattern);
-        Matcher matcher = compile.matcher(html);
-        StringBuilder stringBuilder = new StringBuilder();
-        while (matcher.find()) {
-            stringBuilder.append(matcher.group(2));
-        }
-
-        html = stringBuilder.toString();
-        List<Node> nodeList = new ArrayList<>();
-        if (hasCode) {
-            if (hasHref) {
-                pattern = "(href=\")(.+?.html)(\">)(\\d+?)(<)([\\s\\S]+?)(href=\".+?.html\">)([\\u4E00-\\u9FA5]+?)(<)";
-                compile = Pattern.compile(pattern);
-                matcher = compile.matcher(html);
-                while (matcher.find()) {
-                    Node node = new Node()
-                            .setId(matcher.group(4))
-                            .setName(matcher.group(8))
-                            .setHref(matcher.group(2));
-                    nodeList.add(node);
-                }
-            } else {
-                pattern = "(<td>)(\\d+?)(</td>)([\\s\\S]+?)(<td>)([\\u4E00-\\u9FA5]+?)(</td>)";
-                compile = Pattern.compile(pattern);
-                matcher = compile.matcher(html);
-                while (matcher.find()) {
-                    Node node = new Node()
-                            .setId(matcher.group(2))
-                            .setName(matcher.group(6));
-                    nodeList.add(node);
-                }
-            }
-        } else {
-            pattern = "(href=\")(.+?)(.html\">)([\\u4E00-\\u9FA5]+?)(<)";
-            compile = Pattern.compile(pattern);
-            matcher = compile.matcher(html);
-            while (matcher.find()) {
-                Node node = new Node()
-                        .setId(matcher.group(2))
-                        .setName(matcher.group(4))
-                        .setHref(matcher.group(2) + ".html");
-                nodeList.add(node);
-            }
-        }
-        return nodeList;
-    }
-
-    private static String get(String urlStr) {
-        return HttpUtils.get(urlStr);
+        return builder.deleteCharAt(0).toString();
     }
 
     @Data
     @Accessors(chain = true)
-    public static class Node implements Serializable {
-        private String id;
+    public static class Node {
+        private String code;
         private String name;
-        private String href;
-        private List<Node> children;
+        private List<Node> children = new ArrayList<>();
+
+        public static int parseList(String jsonStr, int i, Node node) {
+            if (jsonStr.charAt(i) != '[') return i;
+            i++;
+            while (jsonStr.charAt(i) != ']') {
+                if (jsonStr.charAt(i) == ',') {
+                    i++;
+                }
+                i = parseNode(jsonStr, i, node);
+            }
+            return i + 1;
+        }
+
+        private static int parseNode(String jsonStr, int i, Node node) {
+            if (jsonStr.charAt(i) != '{') return i;
+            i++;
+            Node newNode = new Node();
+            String key = null;
+            StringBuilder builder = new StringBuilder();
+            while (jsonStr.charAt(i) != '}') {
+                if (jsonStr.charAt(i) == ',' || jsonStr.charAt(i) == ':') {
+                    i++;
+                    continue;
+                }
+                i = parseString(jsonStr, i, builder);
+                if (key == null) {
+                    key = builder.toString();
+                } else {
+                    i = parseString(jsonStr, i, builder);
+                    switch (key) {
+                        case "code":
+                            newNode.setCode(builder.toString());
+                            break;
+                        case "name":
+                            newNode.setName(builder.toString());
+                            break;
+                        case "children":
+                            i = parseList(jsonStr, i, newNode);
+                            break;
+                    }
+                    key = null;
+                }
+                builder.setLength(0);
+            }
+            node.getChildren().add(newNode);
+            return i + 1;
+        }
+
+        private static int parseString(String jsonStr, int i, StringBuilder builder) {
+            if (jsonStr.charAt(i) != '"') return i;
+            while (jsonStr.charAt(++i) != '"') {
+                builder.append(jsonStr.charAt(i));
+            }
+            return i + 1;
+        }
     }
 
 }
