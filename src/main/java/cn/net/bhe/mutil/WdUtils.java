@@ -26,7 +26,7 @@ public class WdUtils {
     public static String random(boolean pascal) {
         StringBuilder word = WORD_ARR[RANDOM.nextInt(WORD_ARR.length)];
         if (pascal) {
-            word.setCharAt(0, (char) (word.charAt(0) - 32));
+            word.setCharAt(0, Character.toUpperCase(word.charAt(0)));
         }
         return word.toString();
     }
