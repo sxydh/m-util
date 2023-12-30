@@ -24,7 +24,7 @@ public class NmUtils {
     }
 
     public static String randomName() {
-        return randomName(NumUtils.ONE + RANDOM.nextInt(NumUtils.TWO) + RANDOM.nextInt(NumUtils.THREE));
+        return randomName(NumUtils.FOUR);
     }
 
     public static String randomName(int maxLen) {
