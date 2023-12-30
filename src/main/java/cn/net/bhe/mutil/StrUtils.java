@@ -16,10 +16,12 @@ public final class StrUtils {
     private static final Random RANDOM = new Random();
 
     private static final char[] CHS_ARR;
+    private static final String[] PHONE_CODE;
 
     static {
         try {
             CHS_ARR = ZipUtils.deComp("StrUtils.CHS_ARR").toCharArray();
+            PHONE_CODE = ZipUtils.deComp("StrUtils.PHONE_CODE").split("#");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -39,6 +41,19 @@ public final class StrUtils {
             sb.append(RANDOM.nextInt(10));
         }
         return sb.toString();
+    }
+
+    public static String randomPhone() {
+        String phoneCode = PHONE_CODE[RANDOM.nextInt(PHONE_CODE.length)];
+        return phoneCode + randomNum(11 - phoneCode.length());
+    }
+
+    public static String randomEn(int len) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            sb.append((char) ('a' + RANDOM.nextInt(26)));
+        }
+        return sb.toString().toUpperCase();
     }
 
     public static boolean isEmpty(String value) {

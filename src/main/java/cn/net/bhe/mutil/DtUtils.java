@@ -54,6 +54,10 @@ public final class DtUtils {
         return Date.from(resLocalDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
+    public static Date addSeconds(Date date, long delta) {
+        return add(date, ChronoUnit.SECONDS, delta);
+    }
+
     public static Date addMinutes(Date date, long delta) {
         return add(date, ChronoUnit.MINUTES, delta);
     }
