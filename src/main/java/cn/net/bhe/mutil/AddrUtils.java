@@ -41,12 +41,12 @@ public class AddrUtils {
 
     @Data
     @Accessors(chain = true)
-    public static class Node {
+    private static class Node {
         private String code;
         private String name;
         private List<Node> children = new ArrayList<>();
 
-        public static int parseList(String jsonStr, int i, Node node) {
+        private static int parseList(String jsonStr, int i, Node node) {
             if (jsonStr.charAt(i) != '[') return i;
             i++;
             while (jsonStr.charAt(i) != ']') {
