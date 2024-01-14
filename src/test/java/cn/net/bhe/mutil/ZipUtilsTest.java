@@ -6,7 +6,7 @@ class ZipUtilsTest {
 
     @Test
     void comp() throws Exception {
-        ZipUtils.comp("AddrUtils.CHN_LIST");
+        ZipUtils.comp("StrUtils.PHONE_CODE");
     }
 
     @Test

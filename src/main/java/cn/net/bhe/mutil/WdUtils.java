@@ -20,15 +20,26 @@ public class WdUtils {
     }
 
     public static String random() {
-        return random(true);
+        return random(NumUtils.ONE, null, true);
     }
 
-    public static String random(boolean pascal) {
-        StringBuilder word = WORD_ARR[RANDOM.nextInt(WORD_ARR.length)];
-        if (pascal) {
-            word.setCharAt(0, Character.toUpperCase(word.charAt(0)));
+    public static String random(int len) {
+        return random(len, null, true);
+    }
+
+    public static String random(int len, Character separator, boolean pascal) {
+        StringBuilder ret = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            if (separator != null && i != 0) {
+                ret.append(separator);
+            }
+            StringBuilder word = WORD_ARR[RANDOM.nextInt(WORD_ARR.length)];
+            if (pascal) {
+                word.setCharAt(0, Character.toUpperCase(word.charAt(0)));
+            }
+            ret.append(word);
         }
-        return word.toString();
+        return ret.toString();
     }
 
 }
