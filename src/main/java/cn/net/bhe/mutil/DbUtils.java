@@ -72,4 +72,10 @@ public class DbUtils {
         }
     }
 
+    public void close() throws SQLException {
+        for (Connection connection : connPool) {
+            connection.close();
+        }
+    }
+
 }
