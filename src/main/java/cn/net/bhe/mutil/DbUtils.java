@@ -40,7 +40,7 @@ public class DbUtils {
                 int columnCount = metaData.getColumnCount();
                 while (resultSet.next()) {
                     HashMap<String, Object> row = new HashMap<>();
-                    for (int i = 0; i < columnCount; i++) {
+                    for (int i = 1; i <= columnCount; i++) {
                         String key = metaData.getColumnName(i);
                         Object value = resultSet.getObject(i);
                         row.put(key, value);
