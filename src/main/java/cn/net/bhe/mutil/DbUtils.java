@@ -4,34 +4,52 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class DbUtils {
 
-    private Connection _connection;
+    private final ArrayBlockingQueue<Connection> connPool = new ArrayBlockingQueue<>(10);
 
     private DbUtils() {
     }
 
-    public static DbUtils build(String url, String user, String password) throws Exception {
+    public static DbUtils build(String url, String user, String password) throws SQLException {
         DbUtils dbUtils = new DbUtils();
-        dbUtils._connection = DriverManager.getConnection(url, user, password);
+        for (int i = 0; i < 5; i++) {
+            dbUtils.putConnection(DriverManager.getConnection(url, user, password));
+        }
         return dbUtils;
     }
 
     private Connection getConnection() {
-        return _connection;
+        try {
+            return connPool.poll(1000, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Can not get connection: " + e.getLocalizedMessage());
+        }
     }
 
-    @SuppressWarnings("SqlSourceToSinkFlow")
-    public boolean execute(String sql) throws Exception {
-        Connection connection = getConnection();
-        try (Statement statement = connection.createStatement()) {
-            return statement.execute(sql);
+    private void putConnection(Connection connection) {
+        try {
+            connPool.put(connection);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Can not put connection: " + e.getLocalizedMessage());
         }
     }
 
     @SuppressWarnings("SqlSourceToSinkFlow")
-    public List<HashMap<String, Object>> executeQuery(String sql) throws Exception {
+    public boolean execute(String sql) throws SQLException {
+        Connection connection = getConnection();
+        try (Statement statement = connection.createStatement()) {
+            return statement.execute(sql);
+        } finally {
+            putConnection(connection);
+        }
+    }
+
+    @SuppressWarnings("SqlSourceToSinkFlow")
+    public List<HashMap<String, Object>> executeQuery(String sql) throws SQLException {
         Connection connection = getConnection();
         try (Statement statement = connection.createStatement()) {
             try (ResultSet resultSet = statement.executeQuery(sql)) {
@@ -49,6 +67,8 @@ public class DbUtils {
                 }
                 return list;
             }
+        } finally {
+            putConnection(connection);
         }
     }
 
