@@ -15,10 +15,11 @@ public class HttpUtils {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             try (InputStream inputStream = conn.getInputStream();
                  BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
-                byte[] bytes = new byte[1024];
                 StringBuilder stringBuilder = new StringBuilder();
-                while (bufferedInputStream.read(bytes) != -1) {
-                    stringBuilder.append(new String(bytes, StandardCharsets.UTF_8));
+                byte[] bytes = new byte[1024];
+                int readLen;
+                while ((readLen = bufferedInputStream.read(bytes)) != -1) {
+                    stringBuilder.append(new String(bytes, 0, readLen, StandardCharsets.UTF_8));
                 }
                 return stringBuilder.toString();
             }
