@@ -46,6 +46,21 @@ public class HttpUtils {
         }
     }
 
+    public static String delete(String urlStr) {
+        try {
+            URL url = new URL(urlStr);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("DELETE");
+            try (InputStream inputStream = conn.getInputStream();
+                 BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
+                return read(bufferedInputStream);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return StrUtils.EMPTY;
+        }
+    }
+
     public static String read(BufferedInputStream bufferedInputStream) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
         byte[] bytes = new byte[1024];
