@@ -1,3 +1,11 @@
-# Profile
+# M Util
 
-A popular, full-featured package of utility classes.
+## QuickStart
+
+```xml
+<dependency>
+    <groupId>cn.net.bhe</groupId>
+    <artifactId>m-util</artifactId>
+    <version>${m-util.version}</version>
+</dependency>
+```
