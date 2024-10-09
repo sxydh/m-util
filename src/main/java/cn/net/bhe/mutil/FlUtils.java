@@ -58,6 +58,7 @@ public final class FlUtils {
     }
 
     public static void write(byte[] bytes, String path, boolean append) throws IOException {
+        mkdir(path);
         try (FileOutputStream fos = new FileOutputStream(path, append)) {
             fos.write(bytes);
         }
