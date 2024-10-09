@@ -9,6 +9,7 @@ public final class StrUtils {
     public static final String COMMA = ",";
     public static final String SLASH = "/";
     public static final String DOT = ".";
+    public static final String UNDERSCORE = "_";
     public static final String ZERO = "0";
     public static final String TMP = "tmp";
     public static final String HELLO_WORLD = "Hello, World!";
