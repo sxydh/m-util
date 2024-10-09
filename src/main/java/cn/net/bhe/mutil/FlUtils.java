@@ -1,9 +1,9 @@
 package cn.net.bhe.mutil;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public final class FlUtils {
 
@@ -40,22 +40,23 @@ public final class FlUtils {
         return System.getProperty(USER_HOME) + File.separator + DESKTOP;
     }
 
-    public static void writeToDesktop(String value) throws Exception {
+    public static void writeToDesktop(String value) throws IOException {
         writeToDesktop(value, String.valueOf(new Snowflake().nextId()), false);
     }
 
-    public static void writeToDesktop(String value, String fileName, boolean append) throws Exception {
+    public static void writeToDesktop(String value, String fileName, boolean append) throws IOException {
         fileName = getDesktop() + File.separator + fileName;
         write(value, fileName, append);
     }
 
     public static void write(String value, String path, boolean append) throws IOException {
-        FileWriter fileWriter = new FileWriter(path, append);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        bufferedWriter.write(value);
-        bufferedWriter.flush();
-        fileWriter.close();
-        bufferedWriter.close();
+        write(value.getBytes(StandardCharsets.UTF_8), path, append);
+    }
+
+    public static void write(byte[] bytes, String path, boolean append) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(path, append)) {
+            fos.write(bytes);
+        }
     }
 
     public static boolean delete(File file) {
