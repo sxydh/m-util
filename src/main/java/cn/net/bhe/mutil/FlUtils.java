@@ -3,6 +3,7 @@ package cn.net.bhe.mutil;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 
 public final class FlUtils {
 
@@ -48,7 +49,7 @@ public final class FlUtils {
         write(value, fileName, append);
     }
 
-    public static void write(String value, String path, boolean append) throws Exception {
+    public static void write(String value, String path, boolean append) throws IOException {
         FileWriter fileWriter = new FileWriter(path, append);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         bufferedWriter.write(value);
