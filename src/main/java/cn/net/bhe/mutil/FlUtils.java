@@ -11,6 +11,18 @@ public final class FlUtils {
     public static final String USER_DIR = "user.dir";
     public static final String DESKTOP = "Desktop";
 
+    public static String getRoot() {
+        return System.getProperty(USER_DIR);
+    }
+
+    public static String getRootTmp() {
+        return getRoot() + File.separator + StrUtils.TMP;
+    }
+
+    public static String getDesktop() {
+        return System.getProperty(USER_HOME) + File.separator + DESKTOP;
+    }
+
     public static boolean mkdir(String path) {
         String dir = StrUtils.EMPTY;
         for (int i = 0; i < path.length(); i++) {
@@ -26,18 +38,6 @@ public final class FlUtils {
             }
         }
         return Boolean.TRUE;
-    }
-
-    public static String getRoot() {
-        return System.getProperty(USER_DIR);
-    }
-
-    public static String getRootTmp() {
-        return getRoot() + File.separator + StrUtils.TMP;
-    }
-
-    public static String getDesktop() {
-        return System.getProperty(USER_HOME) + File.separator + DESKTOP;
     }
 
     public static void writeToDesktop(String value) throws IOException {
