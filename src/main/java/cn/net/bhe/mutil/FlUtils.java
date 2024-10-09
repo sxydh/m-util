@@ -23,6 +23,10 @@ public final class FlUtils {
         return System.getProperty(USER_HOME) + File.separator + DESKTOP;
     }
 
+    public static String getDesktopRand() {
+        return getDesktop() + File.separator + DtUtils.ts17();
+    }
+
     public static boolean mkdir(String path) {
         String dir = StrUtils.EMPTY;
         for (int i = 0; i < path.length(); i++) {
