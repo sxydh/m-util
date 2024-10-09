@@ -19,6 +19,10 @@ public final class FlUtils {
         return getRoot() + File.separator + StrUtils.TMP;
     }
 
+    public static String getRootTmpWithPkg(Class<?> clazz) {
+        return getRootTmp() + File.separator + clazz.getPackageName();
+    }
+
     public static String getDesktop() {
         return System.getProperty(USER_HOME) + File.separator + DESKTOP;
     }
