@@ -20,7 +20,7 @@ public final class FlUtils {
     }
 
     public static String getRootTmpWithPkg(Class<?> clazz) {
-        return getRootTmp() + File.separator + clazz.getPackageName();
+        return getRootTmp() + File.separator + clazz.getPackageName().replace(StrUtils.DOT, StrUtils.UNDERSCORE);
     }
 
     public static String getDesktop() {
