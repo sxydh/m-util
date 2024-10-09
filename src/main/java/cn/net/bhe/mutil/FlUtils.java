@@ -62,6 +62,7 @@ public final class FlUtils {
             return file.delete();
         }
         File[] ifiles = file.listFiles();
+        As.isTrue(ifiles != null);
         for (File ifile : ifiles) {
             if (!delete(ifile)) {
                 return Boolean.FALSE;
