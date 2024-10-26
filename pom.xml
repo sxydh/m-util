@@ -129,7 +129,7 @@
             <distributionManagement>
                 <repository>
                     <id>local</id>
-                    <url>C:/Users/Administrator/.m2/repository</url>
+                    <url>file:///C:/Users/Administrator/.m2/repository</url>
                 </repository>
             </distributionManagement>
         </profile>
