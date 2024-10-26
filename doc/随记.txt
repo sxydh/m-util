@@ -1,0 +1,204 @@
+概述
+    https://central.sonatype.org/register/central-portal/
+    
+开始
+    注册账号
+        https://central.sonatype.com/
+        
+    添加空间
+        https://central.sonatype.com/publishing/namespaces
+        
+    发布公钥
+        https://gnupg.org/download/index.html#sec-1-2
+            https://gpg4win.org/thanks-for-download.html
+                gpg4win-4.3.1.exe
+                    gpg --gen-key
+                        生成 GPG 密钥对
+                    gpg --keyserver hkp://keyserver.ubuntu.com --send-keys <pub_key>
+                        将公钥发送到指定的服务器
+                        
+    修改配置
+        pom.xml
+            追加或更新
+                <groupId>cn.net.bhe</groupId>
+                <artifactId>m-util</artifactId>
+                <version>${revision}</version>
+                <packaging>jar</packaging>
+            
+                <scm>
+                    <url>https://github.com/sxydh/m-util</url>
+                    <connection>https://github.com/sxydh/m-util.git</connection>
+                </scm>
+                <description>A popular, full-featured package of utility classes.</description>
+                <licenses>
+                    <license>
+                        <name>MIT License</name>
+                        <url>http://www.opensource.org/licenses/mit-license.php</url>
+                    </license>
+                </licenses>
+                <developers>
+                    <developer>
+                        <name>sxydh</name>
+                        <email>sxydhgg@gmail.com</email>
+                    </developer>
+                </developers>
+            
+                <name>m-util</name>
+                <url>http://maven.apache.org</url>
+            
+                <properties>
+                    <maven.compiler.target>${java.version}</maven.compiler.target>
+                    <maven.compiler.source>${java.version}</maven.compiler.source>
+                    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+            
+                    <revision>1.1.1</revision>
+                    <junit-jupiter.version>5.6.0</junit-jupiter.version>
+                    <lombok.version>1.18.26</lombok.version>
+                    <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+                    <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
+                    <maven-javadoc-plugin.version>3.6.0</maven-javadoc-plugin.version>
+            
+                    <central-publishing-maven-plugin>0.6.0</central-publishing-maven-plugin>
+                    <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
+                </properties>
+            
+                <dependencies>
+                    <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
+                    <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter</artifactId>
+                        <version>${junit-jupiter.version}</version>
+                        <scope>test</scope>
+                    </dependency>
+            
+            
+                    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+                    <dependency>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                        <version>${lombok.version}</version>
+                        <scope>provided</scope>
+                    </dependency>
+                </dependencies>
+            
+                <build>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-compiler-plugin</artifactId>
+                            <version>${maven-compiler-plugin.version}</version>
+                            <configuration>
+                                <source>${java.version}</source>
+                                <target>${java.version}</target>
+                            </configuration>
+                        </plugin>
+            
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-source-plugin</artifactId>
+                            <version>${maven-source-plugin.version}</version>
+                            <executions>
+                                <execution>
+                                    <id>attach-sources</id>
+                                    <goals>
+                                        <goal>jar-no-fork</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+            
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-javadoc-plugin</artifactId>
+                            <version>${maven-javadoc-plugin.version}</version>
+                            <executions>
+                                <execution>
+                                    <id>attach-javadocs</id>
+                                    <goals>
+                                        <goal>jar</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </build>
+            
+                <profiles>
+                    <profile>
+                        <id>jdk8</id>
+                        <properties>
+                            <java.version>8</java.version>
+                        </properties>
+                    </profile>
+                    <profile>
+                        <id>jdk11</id>
+                        <activation>
+                            <activeByDefault>true</activeByDefault>
+                        </activation>
+                        <properties>
+                            <java.version>11</java.version>
+                        </properties>
+                    </profile>
+                    <profile>
+                        <id>local</id>
+                        <activation>
+                            <activeByDefault>true</activeByDefault>
+                        </activation>
+                        <distributionManagement>
+                            <repository>
+                                <id>local</id>
+                                <url>file:///C:/Users/Administrator/.m2/repository</url>
+                            </repository>
+                        </distributionManagement>
+                    </profile>
+                    <profile>
+                        <id>sonatype</id>
+                        <build>
+                            <plugins>
+                                <plugin>
+                                    <groupId>org.sonatype.central</groupId>
+                                    <artifactId>central-publishing-maven-plugin</artifactId>
+                                    <version>${central-publishing-maven-plugin}</version>
+                                    <extensions>true</extensions>
+                                    <configuration>
+                                        <publishingServerId>sonatype</publishingServerId>
+                                    </configuration>
+                                </plugin>
+            
+                                <plugin>
+                                    <groupId>org.apache.maven.plugins</groupId>
+                                    <artifactId>maven-gpg-plugin</artifactId>
+                                    <version>${maven-gpg-plugin.version}</version>
+                                    <executions>
+                                        <execution>
+                                            <id>sign-artifacts</id>
+                                            <phase>verify</phase>
+                                            <goals>
+                                                <goal>sign</goal>
+                                            </goals>
+                                        </execution>
+                                    </executions>
+                                </plugin>
+                            </plugins>
+                        </build>
+                    </profile>
+                </profiles>
+            
+        settings.xml 
+            追加或更新
+                <server>
+                    <id>sonatype</id>
+                    <username>${username}</username>
+                    <password>${password}</password>
+                </server>
+                
+                    获取认证信息
+                        https://central.sonatype.com/
+                            View Account
+                                Generate User Token
+                
+    部署项目
+        mvn clean deploy
+            验证
+                https://central.sonatype.com/publishing/deployments
+                    需要手动确认发布
