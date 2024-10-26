@@ -32,19 +32,19 @@ public final class FlUtils {
     }
 
     public static String getRootTmp() {
-        return getRoot() + File.separator + StrUtils.TMP;
+        return combine(getRoot(), StrUtils.TMP);
     }
 
     public static String getRootTmpWithPkg(Class<?> clazz) {
-        return getRootTmp() + File.separator + clazz.getPackageName().replace(StrUtils.DOT, StrUtils.UNDERSCORE);
+        return combine(getRootTmp(), clazz.getPackageName().replace(StrUtils.DOT, StrUtils.UNDERSCORE));
     }
 
     public static String getDesktop() {
-        return System.getProperty(USER_HOME) + File.separator + DESKTOP;
+        return combine(System.getProperty(USER_HOME), DESKTOP);
     }
 
     public static String getDesktopRand() {
-        return getDesktop() + File.separator + DtUtils.ts17();
+        return combine(getDesktop(), DtUtils.ts17());
     }
 
     public static boolean mkdir(String path) {
@@ -69,7 +69,7 @@ public final class FlUtils {
     }
 
     public static void writeToDesktop(String value, String fileName, boolean append) throws IOException {
-        fileName = getDesktop() + File.separator + fileName;
+        fileName = combine(getDesktop(), fileName);
         write(value, fileName, append);
     }
 
