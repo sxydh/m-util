@@ -113,8 +113,14 @@ public class FileServerUtils {
         }
 
         protected void process401(HttpExchange httpExchange) throws IOException {
+            /* 注意顺序 */
+            // 1、设置响应头
+            // 2、发送状态码
+            // 3、写入响应体
+            // 4、关闭响应体
+
+            httpExchange.getResponseHeaders().set("WWW-Authenticate", "Basic realm=\"MyRealm\"");
             httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_UNAUTHORIZED, -1);
-            httpExchange.getResponseHeaders().add("WWW-Authenticate", "Basic realm=\"MyRealm\"");
             httpExchange.getResponseBody().close();
         }
 
@@ -135,8 +141,8 @@ public class FileServerUtils {
             String[] subDirectories = directoryFile.list((current, name) -> new File(current, name).isDirectory());
             String[] subFiles = directoryFile.list((current, name) -> new File(current, name).isFile());
 
-            httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
             httpExchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
+            httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 
             try (OutputStream os = httpExchange.getResponseBody();
                  PrintWriter writer = new PrintWriter(os)) {
@@ -168,8 +174,8 @@ public class FileServerUtils {
         protected void processFile(HttpExchange httpExchange, String filePath) throws IOException {
             File file = new File(filePath);
 
-            httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, file.length());
             httpExchange.getResponseHeaders().set("Content-Type", getContentType(filePath));
+            httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, file.length());
 
             try (InputStream is = new FileInputStream(file);
                  OutputStream os = httpExchange.getResponseBody()) {
