@@ -45,12 +45,11 @@ public class FileServerUtils {
             this.fileHandler = fileHandler.init(root, username, password);
         }
 
-        public FileServer start() throws IOException {
+        public void start() throws IOException {
             HttpServer httpServer = HttpServer.create(new InetSocketAddress(host, port), NumUtils.ZERO);
             httpServer.createContext("/", fileHandler);
             httpServer.setExecutor(null);
             httpServer.start();
-            return this;
         }
 
     }
