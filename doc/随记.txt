@@ -116,6 +116,13 @@
                     <username>${server.username}</username>
                     <password>${server.password}</password>
                 </server>
+                
+                    获取认证信息
+                        https://s01.oss.sonatype.org/
+                            Profile
+                                User Token
+                                    Access User Token
+                
     部署项目
         mvn clean deploy
             验证
