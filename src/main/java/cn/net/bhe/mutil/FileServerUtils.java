@@ -92,6 +92,10 @@ public class FileServerUtils {
         }
 
         private boolean authenticateUser(HttpExchange httpExchange) {
+            if (StrUtils.isEmpty(username) && StrUtils.isEmpty(password)) {
+                return true;
+            }
+
             String authorization = httpExchange.getRequestHeaders().getFirst("Authorization");
             if (StrUtils.isEmpty(authorization)) {
                 return false;
