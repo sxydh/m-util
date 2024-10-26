@@ -10,6 +10,7 @@ public class ArrUtils {
         return arr == null || arr.length == 0;
     }
 
+    @SafeVarargs
     public static <T> T firstNotNull(T... arr) {
         if (arr == null) {
             return null;
