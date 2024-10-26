@@ -62,7 +62,7 @@ public class FileServerUtils {
         private String password;
 
         private FileHandler init(String root, String username, String password) {
-            this.root = root;
+            this.root = FlUtils.combine(FlUtils.getRoot(), root);
             this.username = username;
             this.password = password;
             return this;
