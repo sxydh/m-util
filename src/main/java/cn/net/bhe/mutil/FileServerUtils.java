@@ -181,7 +181,7 @@ public class FileServerUtils {
 
             try (InputStream is = new FileInputStream(file);
                  OutputStream os = httpExchange.getResponseBody()) {
-                byte[] buffer = new byte[4096];
+                byte[] buffer = new byte[1024 * 1024];
                 int read;
                 while ((read = is.read(buffer)) != -1) {
                     os.write(buffer, 0, read);
