@@ -194,7 +194,7 @@ public class FileServerUtils {
     }
 
     public static String getContentType(String path) {
-        String extension = path.substring(path.lastIndexOf(".") + 1).toLowerCase();
+        String extension = path.substring(path.lastIndexOf(".")).toLowerCase();
         switch (extension) {
             case ".aac":
                 return "audio/aac";
