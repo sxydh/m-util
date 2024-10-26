@@ -13,6 +13,12 @@
         https://issues.sonatype.org/secure/CreateIssue!default.jspa
     发布证书
         https://gnupg.org/download/index.html#sec-1-2
+            https://gpg4win.org/thanks-for-download.html
+                gpg4win-4.3.1.exe
+                    gpg --gen-key
+                        生成 GPG 密钥对
+                    gpg --keyserver hkp://keyserver.ubuntu.com --send-keys <pub_key>
+                        将公钥发送到指定的服务器
     修改配置
         pom.xml
             追加或更新
