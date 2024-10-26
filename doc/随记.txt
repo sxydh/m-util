@@ -5,6 +5,7 @@
     
     https://central.sonatype.org/publish/requirements/#supported-code-hosting-services-for-personal-groupid
     https://central.sonatype.org/publish/publish-maven/
+    
 开始
     注册账号
         https://issues.sonatype.org/secure/Signup!default.jspa
