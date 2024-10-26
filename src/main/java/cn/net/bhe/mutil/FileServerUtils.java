@@ -30,7 +30,7 @@ public class FileServerUtils {
     }
 
     public static FileServer build(String host, int port, String root, String username, String password, FileHandler fileHandler) throws IOException {
-        return new FileServer(host, port, root, username, password, fileHandler).start();
+        return new FileServer(host, port, root, username, password, fileHandler);
     }
 
     public static class FileServer {
