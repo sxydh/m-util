@@ -1,6 +1,8 @@
 概述
     Deploying to OSSRH with Apache Maven
     
+    https://central.sonatype.com/
+    
     https://central.sonatype.org/publish/requirements/#supported-code-hosting-services-for-personal-groupid
     https://central.sonatype.org/publish/publish-maven/
 开始
