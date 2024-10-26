@@ -7,8 +7,6 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class FileServerUtils {
