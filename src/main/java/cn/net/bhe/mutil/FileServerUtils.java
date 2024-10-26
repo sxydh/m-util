@@ -45,7 +45,7 @@ public class FileServerUtils {
             this.fileHandler = fileHandler.init(root, username, password);
         }
 
-        private FileServer start() throws IOException {
+        public FileServer start() throws IOException {
             HttpServer httpServer = HttpServer.create(new InetSocketAddress(host, port), NumUtils.ZERO);
             httpServer.createContext("/", fileHandler);
             httpServer.setExecutor(null);
