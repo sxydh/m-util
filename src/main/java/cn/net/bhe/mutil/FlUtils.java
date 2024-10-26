@@ -11,6 +11,22 @@ public final class FlUtils {
     public static final String USER_DIR = "user.dir";
     public static final String DESKTOP = "Desktop";
 
+    public static String combine(String... paths) {
+        if (ArrUtils.isEmpty(paths)) {
+            return StrUtils.EMPTY;
+        }
+
+        StringBuilder combinePath = new StringBuilder(StrUtils.EMPTY);
+        for (int i = 0; i < paths.length; i++) {
+            if (i == 0) {
+                combinePath.append(paths[i]);
+                continue;
+            }
+            combinePath.append(File.separator).append(paths[i]);
+        }
+        return combinePath.toString();
+    }
+
     public static String getRoot() {
         return System.getProperty(USER_DIR);
     }
