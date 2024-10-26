@@ -7,7 +7,9 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 
 public class FileServerUtils {
 
@@ -100,16 +102,16 @@ public class FileServerUtils {
                 return false;
             }
 
-            String prefix = "Bearer ";
+            String prefix = "Basic ";
             if (!authorization.startsWith(prefix)) {
                 return false;
             }
 
-            // TODO
             String encodedCredentials = authorization.substring(prefix.length()).trim();
-            String[] parts = encodedCredentials.split(":");
+            String credentials = new String(Base64.getDecoder().decode(encodedCredentials), StandardCharsets.UTF_8);
+            String[] parts = credentials.split(StrUtils.COLON);
 
-            return parts.length == 2 && parts[1].equals(username) && parts[0].equals(password);
+            return parts.length == 2 && parts[0].equals(username) && parts[1].equals(password);
         }
 
         protected void process401(HttpExchange httpExchange) throws IOException {
