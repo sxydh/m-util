@@ -74,6 +74,7 @@ public class FileServerUtils {
             }
 
             String path = httpExchange.getRequestURI().toString();
+            path = UrlUtils.decode(path);
             path = StrUtils.trim(path, "/", true, false);
             path = FlUtils.combine(root, path);
 
