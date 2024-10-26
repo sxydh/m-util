@@ -12,8 +12,9 @@ public final class StrUtils {
     public static final String DOT = ".";
     public static final String SLASH = "/";
     public static final String SPACE = " ";
-    public static final String TMP = "tmp";
+    public static final String SPACE_ENCODE = "%20";
     public static final String HELLO_WORLD = "Hello, World!";
+    public static final String TMP = "tmp";
 
     private static final Random RANDOM = new Random();
 
