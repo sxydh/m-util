@@ -147,7 +147,7 @@ public class FileServerUtils {
                 if (ArrUtils.isNotEmpty(subDirectories)) {
                     Arrays.sort(subDirectories);
                     for (String subDir : subDirectories) {
-                        writer.printf("<li><a href=\"%s/\">%s/</a></li>", URLEncoder.encode(subDir, StandardCharsets.UTF_8), subDir);
+                        writer.printf("<li><a href=\"%s/\">%s/</a></li>", UrlUtils.encode(subDir), subDir);
                         writer.println();
                     }
                 }
@@ -155,7 +155,7 @@ public class FileServerUtils {
                 if (ArrUtils.isNotEmpty(subFiles)) {
                     Arrays.sort(subFiles);
                     for (String subFile : subFiles) {
-                        writer.printf("<li><a href=\"%s\">%s</a></li>", URLEncoder.encode(subFile, StandardCharsets.UTF_8), subFile);
+                        writer.printf("<li><a href=\"%s\">%s</a></li>", UrlUtils.encode(subFile), subFile);
                         writer.println();
                     }
                 }
