@@ -1,14 +1,16 @@
-Deploying to OSSRH with Apache Maven
-    参考
-        https://central.sonatype.org/publish/requirements/#supported-code-hosting-services-for-personal-groupid
-        https://central.sonatype.org/publish/publish-maven/
-    注册JIRA账号
+概述
+    Deploying to OSSRH with Apache Maven
+    
+    https://central.sonatype.org/publish/requirements/#supported-code-hosting-services-for-personal-groupid
+    https://central.sonatype.org/publish/publish-maven/
+开始
+    注册 JIRA 账号
         https://issues.sonatype.org/secure/Signup!default.jspa
-    新建Issue
+    新建 Issue
         https://issues.sonatype.org/secure/CreateIssue!default.jspa
     发布证书
         https://gnupg.org/download/index.html#sec-1-2
-    设置POM.xml 
+    设置 pom.xml 
         <description>A popular, full-featured package of utility classes.</description>
         <licenses>
             <license>
@@ -79,7 +81,7 @@ Deploying to OSSRH with Apache Maven
                         </execution>
                     </executions>
                 </plugin>
-
+    
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
@@ -96,7 +98,7 @@ Deploying to OSSRH with Apache Maven
                 </plugin>
             </plugins>
         </build>
-    设置settings.xml 
+    设置 settings.xml 
         <server>
             <id>ossrh</id>
             <username>${server.username}</username>
