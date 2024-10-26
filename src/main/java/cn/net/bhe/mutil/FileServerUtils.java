@@ -13,23 +13,23 @@ import java.util.Arrays;
 
 public class FileServerUtils {
 
-    public FileServer build(int port) throws IOException {
+    public static FileServer build(int port) throws IOException {
         return build(port, "ROOT");
     }
 
-    public FileServer build(int port, String root) throws IOException {
+    public static FileServer build(int port, String root) throws IOException {
         return build("localhost", port, root);
     }
 
-    public FileServer build(String host, int port, String root) throws IOException {
+    public static FileServer build(String host, int port, String root) throws IOException {
         return build(host, port, root, StrUtils.EMPTY, StrUtils.EMPTY);
     }
 
-    public FileServer build(String host, int port, String root, String username, String password) throws IOException {
+    public static FileServer build(String host, int port, String root, String username, String password) throws IOException {
         return build(host, port, root, username, password, new FileHandler());
     }
 
-    public FileServer build(String host, int port, String root, String username, String password, FileHandler fileHandler) throws IOException {
+    public static FileServer build(String host, int port, String root, String username, String password, FileHandler fileHandler) throws IOException {
         return new FileServer(host, port, root, username, password, fileHandler).start();
     }
 
