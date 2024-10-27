@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Base64;
 
@@ -179,7 +180,7 @@ public class FileServerUtils {
             httpExchange.getResponseHeaders().set("Content-Type", getContentType(filePath));
             httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, file.length());
 
-            try (InputStream is = new FileInputStream(file);
+            try (InputStream is = Files.newInputStream(file.toPath());
                  OutputStream os = httpExchange.getResponseBody()) {
                 byte[] buffer = new byte[8192];
                 int read;
