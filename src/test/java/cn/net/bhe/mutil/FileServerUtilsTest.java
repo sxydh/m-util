@@ -10,8 +10,13 @@ class FileServerUtilsTest {
     void build() throws IOException, InterruptedException {
         String root = FlUtils.combine(FlUtils.getRoot(), "ROOT");
         FlUtils.mkdir(root);
-        FileServerUtils.FileServer fileServer = FileServerUtils.build("localhost", 50, root, "admin", "123");
+
+        FileServerUtils.FileServer fileServer = FileServerUtils.build(50);
         fileServer.start();
-        Thread.sleep(1);
+        fileServer.stop();
+
+        fileServer = FileServerUtils.build("localhost", 50, root, "admin", "123");
+        fileServer.start();
+        fileServer.stop();
     }
 }
