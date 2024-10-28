@@ -230,9 +230,9 @@ public class FileServerUtils {
             case ".csh":
                 return "application/x-csh";
             case ".css":
-                return "text/css";
+                return "text/css; charset=utf-8";
             case ".csv":
-                return "text/csv";
+                return "text/csv; charset=utf-8";
             case ".doc":
                 return "application/msword";
             case ".docx":
@@ -260,9 +260,9 @@ public class FileServerUtils {
             case ".jpg":
                 return "image/jpeg";
             case ".js":
-                return "text/javascript";
+                return "text/javascript; charset=utf-8";
             case ".json":
-                return "application/json";
+                return "application/json; charset=utf-8";
             case ".jsonld":
                 return "application/ld+json";
             case ".mid":
@@ -324,7 +324,7 @@ public class FileServerUtils {
             case ".ttf":
                 return "font/ttf";
             case ".txt":
-                return "text/plain";
+                return "text/plain; charset=utf-8";
             case ".vsd":
                 return "application/vnd.visio";
             case ".wav":
@@ -346,7 +346,7 @@ public class FileServerUtils {
             case ".xlsx":
                 return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             case ".xml":
-                return "application/xml";
+                return "application/xml; charset=utf-8";
             case ".xul":
                 return "application/vnd.mozilla.xul+xml";
             case ".zip":
