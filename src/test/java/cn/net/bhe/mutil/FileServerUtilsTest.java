@@ -7,7 +7,7 @@ import java.io.IOException;
 class FileServerUtilsTest {
 
     @Test
-    void build() throws IOException, InterruptedException {
+    void build() throws IOException {
         String root = FlUtils.combine(FlUtils.getRoot(), "ROOT");
         FlUtils.mkdir(root);
 
