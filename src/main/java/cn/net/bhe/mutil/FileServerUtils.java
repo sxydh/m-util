@@ -40,6 +40,8 @@ public class FileServerUtils {
         private final int port;
         private final FileHandler fileHandler;
 
+        private HttpServer httpServer = null;
+
         private FileServer(String host, int port, String root, String username, String password, FileHandler fileHandler) {
             this.host = host;
             this.port = port;
@@ -47,10 +49,14 @@ public class FileServerUtils {
         }
 
         public void start() throws IOException {
-            HttpServer httpServer = HttpServer.create(new InetSocketAddress(host, port), NumUtils.ZERO);
+            httpServer = HttpServer.create(new InetSocketAddress(host, port), NumUtils.ZERO);
             httpServer.createContext("/", fileHandler);
             httpServer.setExecutor(null);
             httpServer.start();
+        }
+
+        public void stop() {
+            httpServer.stop(0);
         }
 
     }
