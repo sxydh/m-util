@@ -14,23 +14,23 @@ import java.util.Base64;
 
 public class FileServerUtils {
 
-    public static FileServer build(int port) throws IOException {
+    public static FileServer build(int port) {
         return build(port, "ROOT");
     }
 
-    public static FileServer build(int port, String root) throws IOException {
+    public static FileServer build(int port, String root) {
         return build("localhost", port, root);
     }
 
-    public static FileServer build(String host, int port, String root) throws IOException {
+    public static FileServer build(String host, int port, String root) {
         return build(host, port, root, StrUtils.EMPTY, StrUtils.EMPTY);
     }
 
-    public static FileServer build(String host, int port, String root, String username, String password) throws IOException {
+    public static FileServer build(String host, int port, String root, String username, String password) {
         return build(host, port, root, username, password, new FileHandler());
     }
 
-    public static FileServer build(String host, int port, String root, String username, String password, FileHandler fileHandler) throws IOException {
+    public static FileServer build(String host, int port, String root, String username, String password, FileHandler fileHandler) {
         return new FileServer(host, port, root, username, password, fileHandler);
     }
 
