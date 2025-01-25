@@ -4,6 +4,8 @@
 开始
     注册账号
         https://central.sonatype.com/
+            gAAAAABnlHjfAV47uQdYXmXUfZqccQLR6I6uP2tfxdXKMoaoZira1-RXo2i1UYDFqb03hvOD5d4Z0q3reMfPxJXovysbwA35LUoQ_onuhArFf2MEJeA-Eh8=
+            gAAAAABnlHj9yuZxX-YFu0C31Q4r0fUk-xywjlYex_Dmr3xLOAkFP4DNhNZns5LtR8r4BicgBI4b40GTogSt-2LrYAdQoghqjA==
         
     添加空间
         https://central.sonatype.com/publishing/namespaces
